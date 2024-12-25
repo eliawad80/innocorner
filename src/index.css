@@ -41,5 +41,5 @@
 }
 
 .product-card {
-  @apply relative group overflow-hidden rounded-lg border p-2 hover:shadow-lg transition-all duration-300;
+  @apply relative overflow-hidden rounded-lg border p-2 hover:shadow-lg transition-all duration-300;
 }
