@@ -39,6 +39,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
         
+      - name: Create CNAME file
+        run: echo "innocorner.com" > ./dist/CNAME
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:

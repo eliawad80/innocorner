@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -13,5 +12,5 @@ export default defineConfig({
   server: {
     port: 8080
   },
-  base: "/innocorner/", // Updated to match your repository name
+  base: "/" // Changed from "/innocorner/" to "/" since we're using a custom domain
 });
