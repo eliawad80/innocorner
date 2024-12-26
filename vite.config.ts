@@ -10,5 +10,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/quirky-cart-market/", // Add this line - replace with your repo name
+  server: {
+    port: 8080
+  },
+  base: "/innocrner/", // Updated to match your repository name
 });
