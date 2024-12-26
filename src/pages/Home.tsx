@@ -6,7 +6,7 @@ const Home = () => {
     <div className="min-h-screen">
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-6xl font-bold">Welcome to Your Store</h1>
+          <h1 className="text-4xl md:text-6xl font-bold">Welcome to InnoCorner</h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
             Discover our curated collection of premium products designed to enhance your lifestyle.
           </p>

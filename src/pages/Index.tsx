@@ -62,7 +62,7 @@ const Index = () => {
     <div className="min-h-screen">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Your Store</h1>
+          <h1 className="text-2xl font-bold">InnoCorner</h1>
           <Cart items={cartItems} onRemoveItem={removeFromCart} />
         </div>
       </header>
