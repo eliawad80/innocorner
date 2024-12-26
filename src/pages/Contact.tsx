@@ -25,8 +25,8 @@ const Contact = () => {
             <div className="space-y-4">
               <p className="flex items-center gap-2">
                 <span className="font-semibold">Email:</span>
-                <a href="mailto:contact@yourstore.com" className="text-primary hover:underline">
-                  contact@yourstore.com
+                <a href="mailto:contact@innocorner.com" className="text-primary hover:underline">
+                  contact@innocorner.com
                 </a>
               </p>
               <p className="flex items-center gap-2">
@@ -37,7 +37,7 @@ const Contact = () => {
               </p>
               <p className="flex items-center gap-2">
                 <span className="font-semibold">Address:</span>
-                <span>123 Store Street, City, Country</span>
+                <span>123 InnoCorner Street, City, Country</span>
               </p>
             </div>
           </div>
