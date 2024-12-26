@@ -13,5 +13,5 @@ export default defineConfig({
   server: {
     port: 8080
   },
-  base: "/innocrner/", // Updated to match your repository name
+  base: "/innocorner/", // Updated to match your repository name
 });
