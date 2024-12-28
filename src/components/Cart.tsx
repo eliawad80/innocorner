@@ -8,9 +8,8 @@ import {
 } from "./ui/sheet";
 import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "./ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { Json } from "@/integrations/supabase/types";
+import { CartList } from "./CartList";
+import { CartCheckout } from "./CartCheckout";
 
 interface CartItem {
   id: number;
@@ -25,54 +24,11 @@ interface CartProps {
 }
 
 export function Cart({ items, onRemoveItem }: CartProps) {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const { toast } = useToast();
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = async () => {
-    if (items.length === 0) {
-      toast({
-        title: "Cart is empty",
-        description: "Please add items to your cart before checking out.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsProcessing(true);
-    try {
-      // Convert CartItem[] to a format compatible with Json type
-      const orderItems = items.map(item => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity
-      }));
-
-      const { error } = await supabase.from("orders").insert({
-        total_amount: total,
-        items: orderItems as Json,
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Order placed successfully!",
-        description: `Total amount: $${total.toFixed(2)}`,
-      });
-      
-      // Clear cart items by removing each item
-      items.forEach(item => onRemoveItem(item.id));
-      
-    } catch (error) {
-      toast({
-        title: "Checkout failed",
-        description: "There was an error processing your order. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsProcessing(false);
-    }
+  const handleCheckoutSuccess = () => {
+    // Clear cart items by removing each item
+    items.forEach(item => onRemoveItem(item.id));
   };
 
   return (
@@ -92,43 +48,13 @@ export function Cart({ items, onRemoveItem }: CartProps) {
           <SheetTitle>Shopping Cart</SheetTitle>
         </SheetHeader>
         <div className="mt-8">
-          {items.length === 0 ? (
-            <p className="text-muted-foreground text-center">Your cart is empty</p>
-          ) : (
-            <>
-              <div className="space-y-4">
-                {items.map((item) => (
-                  <div key={item.id} className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium">{item.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        ${item.price.toFixed(2)} x {item.quantity}
-                      </p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onRemoveItem(item.id)}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-              </div>
-              <div className="border-t mt-4 pt-4">
-                <div className="flex justify-between font-medium">
-                  <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
-                </div>
-                <Button 
-                  className="w-full mt-4" 
-                  onClick={handleCheckout}
-                  disabled={isProcessing}
-                >
-                  {isProcessing ? "Processing..." : "Checkout"}
-                </Button>
-              </div>
-            </>
+          <CartList items={items} onRemoveItem={onRemoveItem} />
+          {items.length > 0 && (
+            <CartCheckout 
+              items={items} 
+              total={total} 
+              onSuccess={handleCheckoutSuccess}
+            />
           )}
         </div>
       </SheetContent>
