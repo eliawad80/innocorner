@@ -1,7 +1,40 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navbar = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      checkAuth();
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    setIsAuthenticated(!!session);
+
+    if (session) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", session.user.id)
+        .single();
+
+      setIsAdmin(!!profile?.is_admin);
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4">
@@ -23,6 +56,20 @@ const Navbar = () => {
             <Link to="/contact">
               <Button variant="ghost">Contact</Button>
             </Link>
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="ghost">Admin</Button>
+              </Link>
+            )}
+            {isAuthenticated ? (
+              <Button variant="ghost" onClick={handleLogout}>
+                Logout
+              </Button>
+            ) : (
+              <Link to="/login">
+                <Button variant="ghost">Login</Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}

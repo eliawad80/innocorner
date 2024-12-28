@@ -9,6 +9,7 @@ import {
 import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CartItem {
   id: number;
@@ -39,9 +40,15 @@ export function Cart({ items, onRemoveItem }: CartProps) {
 
     setIsProcessing(true);
     try {
-      // Simulate checkout process
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
+      const { error } = await supabase.from("orders").insert([
+        {
+          total_amount: total,
+          items: items,
+        },
+      ]);
+
+      if (error) throw error;
+
       toast({
         title: "Order placed successfully!",
         description: `Total amount: $${total.toFixed(2)}`,

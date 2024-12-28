@@ -1,34 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { Cart } from "@/components/Cart";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
-// Sample product data (replace with your actual products)
-const products = [
-  {
-    id: 1,
-    name: "Premium T-Shirt",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop&q=60",
-  },
-  {
-    id: 2,
-    name: "Classic Denim Jeans",
-    price: 79.99,
-    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&auto=format&fit=crop&q=60",
-  },
-  {
-    id: 3,
-    name: "Leather Sneakers",
-    price: 129.99,
-    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&auto=format&fit=crop&q=60",
-  },
-  {
-    id: 4,
-    name: "Casual Watch",
-    price: 199.99,
-    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&auto=format&fit=crop&q=60",
-  },
-];
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string | null;
+}
 
 interface CartItem {
   id: number;
@@ -39,8 +21,32 @@ interface CartItem {
 
 const Index = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const { toast } = useToast();
 
-  const addToCart = (product: typeof products[0]) => {
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("id");
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch products",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setProducts(data);
+  };
+
+  const addToCart = (product: Product) => {
     setCartItems((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
