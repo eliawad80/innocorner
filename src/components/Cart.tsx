@@ -7,6 +7,8 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "./ui/use-toast";
 
 interface CartItem {
   id: number;
@@ -21,7 +23,43 @@ interface CartProps {
 }
 
 export function Cart({ items, onRemoveItem }: CartProps) {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const handleCheckout = async () => {
+    if (items.length === 0) {
+      toast({
+        title: "Cart is empty",
+        description: "Please add items to your cart before checking out.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      // Simulate checkout process
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      
+      toast({
+        title: "Order placed successfully!",
+        description: `Total amount: $${total.toFixed(2)}`,
+      });
+      
+      // Clear cart items by removing each item
+      items.forEach(item => onRemoveItem(item.id));
+      
+    } catch (error) {
+      toast({
+        title: "Checkout failed",
+        description: "There was an error processing your order. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <Sheet>
@@ -68,7 +106,13 @@ export function Cart({ items, onRemoveItem }: CartProps) {
                   <span>Total</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
-                <Button className="w-full mt-4">Checkout</Button>
+                <Button 
+                  className="w-full mt-4" 
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? "Processing..." : "Checkout"}
+                </Button>
               </div>
             </>
           )}
