@@ -10,6 +10,7 @@ interface Product {
   price: number;
   image: string;
   description: string | null;
+  stock: number;
 }
 
 interface ProductFormProps {
@@ -25,7 +26,65 @@ export function ProductForm({ editingProduct, setEditingProduct, onSuccess }: Pr
     price: "",
     image: "",
     description: "",
+    stock: 0,
   });
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setUploading(true);
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please upload an image file",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Create a unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      // Upload the file to Supabase storage
+      const { error: uploadError, data } = await supabase.storage
+        .from('products')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      // Get the public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('products')
+        .getPublicUrl(filePath);
+
+      if (editingProduct) {
+        setEditingProduct({ ...editingProduct, image: publicUrl });
+      } else {
+        setNewProduct({ ...newProduct, image: publicUrl });
+      }
+
+      toast({
+        title: "Success",
+        description: "Image uploaded successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to upload image",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleAddProduct = async () => {
     const price = parseFloat(newProduct.price);
@@ -44,6 +103,7 @@ export function ProductForm({ editingProduct, setEditingProduct, onSuccess }: Pr
         price,
         image: newProduct.image,
         description: newProduct.description,
+        stock: newProduct.stock,
       },
     ]);
 
@@ -66,6 +126,7 @@ export function ProductForm({ editingProduct, setEditingProduct, onSuccess }: Pr
       price: "",
       image: "",
       description: "",
+      stock: 0,
     });
     onSuccess();
   };
@@ -80,6 +141,7 @@ export function ProductForm({ editingProduct, setEditingProduct, onSuccess }: Pr
         price: editingProduct.price,
         image: editingProduct.image,
         description: editingProduct.description,
+        stock: editingProduct.stock,
       })
       .eq("id", editingProduct.id);
 
@@ -131,14 +193,33 @@ export function ProductForm({ editingProduct, setEditingProduct, onSuccess }: Pr
           }
         />
         <Input
-          placeholder="Image URL"
-          value={editingProduct ? editingProduct.image : newProduct.image}
+          placeholder="Stock"
+          type="number"
+          value={editingProduct ? editingProduct.stock : newProduct.stock}
           onChange={(e) =>
             editingProduct
-              ? setEditingProduct({ ...editingProduct, image: e.target.value })
-              : setNewProduct({ ...newProduct, image: e.target.value })
+              ? setEditingProduct({
+                  ...editingProduct,
+                  stock: parseInt(e.target.value),
+                })
+              : setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })
           }
         />
+        <div className="flex flex-col gap-2">
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            disabled={uploading}
+          />
+          {(editingProduct?.image || newProduct.image) && (
+            <img
+              src={editingProduct ? editingProduct.image : newProduct.image}
+              alt="Product preview"
+              className="w-32 h-32 object-cover rounded-lg"
+            />
+          )}
+        </div>
         <Input
           placeholder="Description"
           value={

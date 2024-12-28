@@ -16,6 +16,7 @@ interface Product {
   price: number;
   image: string;
   description: string | null;
+  stock: number;
 }
 
 interface ProductTableProps {
@@ -53,8 +54,10 @@ export function ProductTable({ products, onEdit, onDelete }: ProductTableProps) 
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
+            <TableHead>Image</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>Stock</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -62,8 +65,16 @@ export function ProductTable({ products, onEdit, onDelete }: ProductTableProps) 
           {products.map((product) => (
             <TableRow key={product.id}>
               <TableCell>{product.id}</TableCell>
+              <TableCell>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-16 h-16 object-cover rounded"
+                />
+              </TableCell>
               <TableCell>{product.name}</TableCell>
               <TableCell>${product.price.toFixed(2)}</TableCell>
+              <TableCell>{product.stock}</TableCell>
               <TableCell>
                 <div className="space-x-2">
                   <Button

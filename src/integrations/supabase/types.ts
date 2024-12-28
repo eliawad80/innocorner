@@ -41,6 +41,7 @@ export type Database = {
           image: string
           name: string
           price: number
+          stock: number
         }
         Insert: {
           created_at?: string
@@ -49,6 +50,7 @@ export type Database = {
           image: string
           name: string
           price: number
+          stock?: number
         }
         Update: {
           created_at?: string
@@ -57,6 +59,7 @@ export type Database = {
           image?: string
           name?: string
           price?: number
+          stock?: number
         }
         Relationships: []
       }
