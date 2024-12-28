@@ -10,6 +10,7 @@ import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Json } from "@/integrations/supabase/types";
 
 interface CartItem {
   id: number;
@@ -40,12 +41,18 @@ export function Cart({ items, onRemoveItem }: CartProps) {
 
     setIsProcessing(true);
     try {
-      const { error } = await supabase.from("orders").insert([
-        {
-          total_amount: total,
-          items: items,
-        },
-      ]);
+      // Convert CartItem[] to a format compatible with Json type
+      const orderItems = items.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
+      }));
+
+      const { error } = await supabase.from("orders").insert({
+        total_amount: total,
+        items: orderItems as Json,
+      });
 
       if (error) throw error;
 
