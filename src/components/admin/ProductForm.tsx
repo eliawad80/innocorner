@@ -3,15 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description: string | null;
-  stock: number;
-}
+import { ImageUpload } from "./ImageUpload";
+import type { Product } from "@/types/product";
 
 interface ProductFormProps {
   editingProduct: Product | null;
@@ -28,63 +21,6 @@ export function ProductForm({ editingProduct, setEditingProduct, onSuccess }: Pr
     description: "",
     stock: 0,
   });
-  const [uploading, setUploading] = useState(false);
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      setUploading(true);
-      const file = event.target.files?.[0];
-      if (!file) return;
-
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload an image file",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Create a unique file name
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
-
-      // Upload the file to Supabase storage
-      const { error: uploadError, data } = await supabase.storage
-        .from('products')
-        .upload(filePath, file);
-
-      if (uploadError) {
-        throw uploadError;
-      }
-
-      // Get the public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('products')
-        .getPublicUrl(filePath);
-
-      if (editingProduct) {
-        setEditingProduct({ ...editingProduct, image: publicUrl });
-      } else {
-        setNewProduct({ ...newProduct, image: publicUrl });
-      }
-
-      toast({
-        title: "Success",
-        description: "Image uploaded successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to upload image",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
 
   const handleAddProduct = async () => {
     const price = parseFloat(newProduct.price);
@@ -205,21 +141,14 @@ export function ProductForm({ editingProduct, setEditingProduct, onSuccess }: Pr
               : setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })
           }
         />
-        <div className="flex flex-col gap-2">
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            disabled={uploading}
-          />
-          {(editingProduct?.image || newProduct.image) && (
-            <img
-              src={editingProduct ? editingProduct.image : newProduct.image}
-              alt="Product preview"
-              className="w-32 h-32 object-cover rounded-lg"
-            />
-          )}
-        </div>
+        <ImageUpload
+          currentImage={editingProduct ? editingProduct.image : newProduct.image}
+          onImageUpload={(url) =>
+            editingProduct
+              ? setEditingProduct({ ...editingProduct, image: url })
+              : setNewProduct({ ...newProduct, image: url })
+          }
+        />
         <Input
           placeholder="Description"
           value={

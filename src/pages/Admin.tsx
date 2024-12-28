@@ -4,14 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { ProductTable } from "@/components/admin/ProductTable";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description: string | null;
-}
+import type { Product } from "@/types/product";
 
 const Admin = () => {
   const navigate = useNavigate();

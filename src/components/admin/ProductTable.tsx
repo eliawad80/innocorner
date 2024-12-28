@@ -9,15 +9,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description: string | null;
-  stock: number;
-}
+import type { Product } from "@/types/product";
 
 interface ProductTableProps {
   products: Product[];
