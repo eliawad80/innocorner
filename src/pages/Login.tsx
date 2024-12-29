@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,23 +17,15 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/functions/v1/admin-auth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('admin-auth', {
+        body: {
           action: 'login',
           username,
           password,
-        }),
+        },
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
+      if (error) throw error;
 
       localStorage.setItem('adminToken', data.token);
       toast({
@@ -41,9 +34,10 @@ const Login = () => {
       });
       navigate("/admin");
     } catch (error) {
+      console.error('Login error:', error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Login failed",
         variant: "destructive",
       });
     } finally {
