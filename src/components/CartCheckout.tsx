@@ -2,6 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface CartCheckoutProps {
   items: any[];
@@ -11,6 +20,7 @@ interface CartCheckoutProps {
 
 export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
   const { toast } = useToast();
 
   const handleCheckout = async () => {
@@ -20,11 +30,7 @@ export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
       // First check if user is authenticated
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast({
-          title: "Error",
-          description: "Please login to checkout",
-          variant: "destructive",
-        });
+        setShowAuthDialog(true);
         return;
       }
 
@@ -61,6 +67,14 @@ export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
     }
   };
 
+  // Listen for successful authentication
+  supabase.auth.onAuthStateChange((event) => {
+    if (event === "SIGNED_IN") {
+      setShowAuthDialog(false);
+      handleCheckout(); // Retry checkout after successful login
+    }
+  });
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="flex justify-between items-center">
@@ -74,6 +88,32 @@ export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
       >
         {isLoading ? "Processing..." : "Checkout"}
       </Button>
+
+      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Login to Complete Checkout</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            <Auth
+              supabaseClient={supabase}
+              appearance={{
+                theme: ThemeSupa,
+                variables: {
+                  default: {
+                    colors: {
+                      brand: '#2563eb',
+                      brandAccent: '#1d4ed8',
+                    }
+                  }
+                }
+              }}
+              providers={["google"]}
+              redirectTo={`${window.location.origin}/auth/callback`}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
