@@ -6,10 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 interface CartCheckoutProps {
   items: any[];
   total: number;
-  onCheckoutComplete: () => void;
+  onSuccess: () => void;
 }
 
-const CartCheckout = ({ items, total, onCheckoutComplete }: CartCheckoutProps) => {
+export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -49,7 +49,7 @@ const CartCheckout = ({ items, total, onCheckoutComplete }: CartCheckoutProps) =
         description: "Order placed successfully!",
       });
       
-      onCheckoutComplete();
+      onSuccess();
     } catch (error: any) {
       toast({
         title: "Error",
@@ -76,6 +76,4 @@ const CartCheckout = ({ items, total, onCheckoutComplete }: CartCheckoutProps) =
       </Button>
     </div>
   );
-};
-
-export default CartCheckout;
+}
