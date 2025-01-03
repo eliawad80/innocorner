@@ -2,16 +2,24 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   const redirectUrl = location.state?.from || "/";
 
-  // Listen for auth state changes
+  // Listen for auth state changes and errors
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_IN" && session) {
       navigate(redirectUrl);
+    }
+    if (event === "USER_DELETED" || event === "SIGNED_OUT") {
+      toast({
+        title: "Signed out",
+        description: "You have been signed out successfully",
+      });
     }
   });
 
@@ -40,9 +48,11 @@ const Login = () => {
               }
             }
           }}
-          providers={["google", "facebook"]}
+          providers={["google"]} // Only enable Google for now
           redirectTo={`${window.location.origin}/auth/callback`}
           onlyThirdPartyProviders={false}
+          showLinks={true}
+          view="sign_in"
         />
       </div>
     </div>
