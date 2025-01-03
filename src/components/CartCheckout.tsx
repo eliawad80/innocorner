@@ -1,83 +1,81 @@
-import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { Json } from "@/integrations/supabase/types";
 import { useState } from "react";
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CartCheckoutProps {
-  items: CartItem[];
+  items: any[];
   total: number;
-  onSuccess: () => void;
+  onCheckoutComplete: () => void;
 }
 
-export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
-  const [isProcessing, setIsProcessing] = useState(false);
+const CartCheckout = ({ items, total, onCheckoutComplete }: CartCheckoutProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleCheckout = async () => {
-    if (items.length === 0) {
-      toast({
-        title: "Cart is empty",
-        description: "Please add items to your cart before checking out.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsProcessing(true);
     try {
-      const orderItems = items.map(item => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity
-      }));
+      setIsLoading(true);
 
-      const { error } = await supabase.from("orders").insert({
-        total_amount: total,
-        items: orderItems as Json,
-      });
+      // First check if user is authenticated
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Error",
+          description: "Please login to checkout",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      if (error) throw error;
+      // Create order in database
+      const { data: order, error } = await supabase
+        .from('orders')
+        .insert({
+          total_amount: total,
+          items: items,
+          status: 'pending'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Checkout error:', error);
+        throw error;
+      }
 
       toast({
-        title: "Order placed successfully!",
-        description: `Total amount: $${total.toFixed(2)}`,
+        title: "Success",
+        description: "Order placed successfully!",
       });
       
-      onSuccess();
-      
-    } catch (error) {
+      onCheckoutComplete();
+    } catch (error: any) {
       toast({
-        title: "Checkout failed",
-        description: "There was an error processing your order. Please try again.",
+        title: "Error",
+        description: error.message || "Failed to process checkout",
         variant: "destructive",
       });
     } finally {
-      setIsProcessing(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="border-t mt-4 pt-4">
-      <div className="flex justify-between font-medium">
-        <span>Total</span>
-        <span>${total.toFixed(2)}</span>
+    <div className="flex flex-col gap-4 p-4">
+      <div className="flex justify-between items-center">
+        <span className="text-lg font-semibold">Total:</span>
+        <span className="text-lg">${total.toFixed(2)}</span>
       </div>
       <Button 
-        className="w-full mt-4" 
-        onClick={handleCheckout}
-        disabled={isProcessing}
+        onClick={handleCheckout} 
+        disabled={isLoading || items.length === 0}
+        className="w-full"
       >
-        {isProcessing ? "Processing..." : "Checkout"}
+        {isLoading ? "Processing..." : "Checkout"}
       </Button>
     </div>
   );
-}
+};
+
+export default CartCheckout;
