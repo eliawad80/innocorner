@@ -8,9 +8,10 @@ interface CartListProps {
     quantity: number;
   }>;
   onRemoveItem: (id: number) => void;
+  onUpdateQuantity: (id: number, quantity: number) => void;
 }
 
-export function CartList({ items, onRemoveItem }: CartListProps) {
+export function CartList({ items, onRemoveItem, onUpdateQuantity }: CartListProps) {
   if (items.length === 0) {
     return <p className="text-muted-foreground text-center">Your cart is empty</p>;
   }
@@ -22,6 +23,7 @@ export function CartList({ items, onRemoveItem }: CartListProps) {
           key={item.id}
           {...item}
           onRemove={onRemoveItem}
+          onUpdateQuantity={onUpdateQuantity}
         />
       ))}
     </div>
