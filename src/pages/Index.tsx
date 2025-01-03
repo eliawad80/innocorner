@@ -10,6 +10,7 @@ interface Product {
   price: number;
   image: string;
   description: string | null;
+  stock: number;
 }
 
 interface CartItem {
@@ -46,17 +47,27 @@ const Index = () => {
     setProducts(data);
   };
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantity: number) => {
     setCartItems((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+        const newQuantity = existingItem.quantity + quantity;
+        if (newQuantity <= product.stock) {
+          return prev.map((item) =>
+            item.id === product.id
+              ? { ...item, quantity: newQuantity }
+              : item
+          );
+        } else {
+          toast({
+            title: "Stock limit reached",
+            description: `Only ${product.stock} items available`,
+            variant: "destructive",
+          });
+          return prev;
+        }
       }
-      return [...prev, { ...product, quantity: 1 }];
+      return [...prev, { ...product, quantity }];
     });
   };
 
@@ -64,12 +75,26 @@ const Index = () => {
     setCartItems((prev) => prev.filter((item) => item.id !== productId));
   };
 
+  const updateCartItemQuantity = (productId: number, quantity: number) => {
+    setCartItems(prev => 
+      prev.map(item => 
+        item.id === productId 
+          ? { ...item, quantity } 
+          : item
+      )
+    );
+  };
+
   return (
     <div className="min-h-screen">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">InnoCorner</h1>
-          <Cart items={cartItems} onRemoveItem={removeFromCart} />
+          <Cart 
+            items={cartItems} 
+            onRemoveItem={removeFromCart}
+            onUpdateQuantity={updateCartItemQuantity}
+          />
         </div>
       </header>
 
@@ -80,7 +105,7 @@ const Index = () => {
             <ProductCard
               key={product.id}
               {...product}
-              onAddToCart={() => addToCart(product)}
+              onAddToCart={(quantity) => addToCart(product, quantity)}
             />
           ))}
         </div>

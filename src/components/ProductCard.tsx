@@ -2,20 +2,31 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Minus } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ProductCardProps {
   id: number;
   name: string;
   price: number;
   image: string;
+  stock: number;
   onAddToCart: (quantity: number) => void;
 }
 
-export function ProductCard({ name, price, image, onAddToCart }: ProductCardProps) {
+export function ProductCard({ name, price, image, stock, onAddToCart }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
+  const { toast } = useToast();
 
   const incrementQuantity = () => {
-    setQuantity(prev => prev + 1);
+    if (quantity < stock) {
+      setQuantity(prev => prev + 1);
+    } else {
+      toast({
+        title: "Stock limit reached",
+        description: `Only ${stock} items available`,
+        variant: "destructive",
+      });
+    }
   };
 
   const decrementQuantity = () => {
@@ -25,7 +36,16 @@ export function ProductCard({ name, price, image, onAddToCart }: ProductCardProp
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!isNaN(value) && value > 0) {
-      setQuantity(value);
+      if (value <= stock) {
+        setQuantity(value);
+      } else {
+        setQuantity(stock);
+        toast({
+          title: "Stock limit reached",
+          description: `Only ${stock} items available`,
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -46,6 +66,7 @@ export function ProductCard({ name, price, image, onAddToCart }: ProductCardProp
             <Input
               type="number"
               min="1"
+              max={stock}
               value={quantity}
               onChange={handleQuantityChange}
               className="w-16 h-8 text-center"
@@ -63,14 +84,16 @@ export function ProductCard({ name, price, image, onAddToCart }: ProductCardProp
             onClick={() => onAddToCart(quantity)} 
             variant="secondary" 
             className="bg-white/90 hover:bg-white"
+            disabled={stock === 0}
           >
-            Add to Cart
+            {stock === 0 ? "Out of Stock" : "Add to Cart"}
           </Button>
         </div>
       </div>
       <div className="mt-2">
         <h3 className="font-semibold">{name}</h3>
         <p className="text-sm text-gray-600">${price.toFixed(2)}</p>
+        <p className="text-sm text-gray-500">{stock} in stock</p>
       </div>
     </div>
   );
