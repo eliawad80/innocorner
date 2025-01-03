@@ -2,7 +2,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { AuthChangeEvent } from "@supabase/supabase-js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,11 +12,11 @@ const Login = () => {
   const redirectUrl = location.state?.from || "/";
 
   // Listen for auth state changes and errors
-  supabase.auth.onAuthStateChange((event, session) => {
+  supabase.auth.onAuthStateChange((event: AuthChangeEvent, session) => {
     if (event === "SIGNED_IN" && session) {
       navigate(redirectUrl);
     }
-    if (event === "USER_DELETED" || event === "SIGNED_OUT") {
+    if (event === "SIGNED_OUT") {
       toast({
         title: "Signed out",
         description: "You have been signed out successfully",
