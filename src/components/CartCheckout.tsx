@@ -1,14 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { CartItem } from "@/types/product";
+
+export interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
 
 interface CartCheckoutProps {
   items: CartItem[];
   total: number;
+  onSuccess: () => void;
 }
 
-export function CartCheckout({ items, total }: CartCheckoutProps) {
+export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
   const { toast } = useToast();
 
   const handleCheckout = async () => {
@@ -63,6 +70,7 @@ export function CartCheckout({ items, total }: CartCheckoutProps) {
 
       // Redirect to Stripe checkout
       window.location.href = url;
+      onSuccess();
       
     } catch (error: any) {
       console.error('Checkout error:', error);

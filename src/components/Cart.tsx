@@ -8,14 +8,7 @@ import {
 } from "./ui/sheet";
 import { ShoppingCart } from "lucide-react";
 import { CartList } from "./CartList";
-import { CartCheckout } from "./CartCheckout";
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import { CartCheckout, CartItem } from "./CartCheckout";
 
 interface CartProps {
   items: CartItem[];
