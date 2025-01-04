@@ -8,13 +8,15 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { items, total } = await req.json();
+    const { items } = await req.json();
 
+    // Initialize Stripe
     const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
       apiVersion: '2023-10-16',
     });
@@ -25,7 +27,6 @@ serve(async (req) => {
         currency: 'usd',
         product_data: {
           name: item.name,
-          images: [item.image],
         },
         unit_amount: Math.round(item.price * 100), // Convert to cents
       },

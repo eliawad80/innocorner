@@ -58,21 +58,30 @@ export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
           'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
         },
         body: JSON.stringify({
-          items,
-          total
+          items: items.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity
+          }))
         })
       });
 
-      const { url, error } = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create checkout session');
+      }
+
+      const { url } = await response.json();
       
-      if (error) {
-        throw new Error(error);
+      if (!url) {
+        throw new Error('No checkout URL received');
       }
 
       // Redirect to Stripe checkout
       window.location.href = url;
       
     } catch (error: any) {
+      console.error('Checkout error:', error);
       toast({
         title: "Error",
         description: error.message || "Failed to process checkout",
