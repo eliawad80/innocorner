@@ -17,15 +17,38 @@ const Admin = () => {
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
+    checkAdminStatus();
+    fetchProducts();
+  }, []);
+
+  const checkAdminStatus = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
       navigate("/login");
       return;
     }
-    fetchProducts();
-  }, [navigate]);
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", session.user.id)
+      .single();
+
+    if (!profile?.is_admin) {
+      navigate("/");
+      toast({
+        title: "Access Denied",
+        description: "You don't have admin privileges",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsAdmin(true);
+  };
 
   const fetchProducts = async () => {
     try {
@@ -35,7 +58,7 @@ const Admin = () => {
         .order("id");
 
       if (error) throw error;
-      setProducts(data);
+      setProducts(data || []);
     } catch (error) {
       toast({
         title: "Error",
@@ -45,44 +68,9 @@ const Admin = () => {
     }
   };
 
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await fetch('/functions/v1/admin-auth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'change-password',
-          username: 'Elie', // Hardcoded for now since we only have one admin
-          newPassword,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to change password');
-      }
-
-      toast({
-        title: "Success",
-        description: "Password changed successfully",
-      });
-      setShowPasswordChange(false);
-      setNewPassword("");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!isAdmin) {
+    return null;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

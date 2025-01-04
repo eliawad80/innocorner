@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 const Navbar = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -19,16 +18,6 @@ const Navbar = () => {
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     setIsAuthenticated(!!session);
-
-    if (session) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("is_admin")
-        .eq("id", session.user.id)
-        .single();
-
-      setIsAdmin(!!profile?.is_admin);
-    }
   };
 
   const handleLogout = async () => {
@@ -56,11 +45,6 @@ const Navbar = () => {
             <Link to="/contact">
               <Button variant="ghost">Contact</Button>
             </Link>
-            {isAdmin && (
-              <Link to="/admin">
-                <Button variant="ghost">Admin</Button>
-              </Link>
-            )}
             {isAuthenticated ? (
               <Button variant="ghost" onClick={handleLogout}>
                 Logout
