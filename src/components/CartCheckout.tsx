@@ -35,7 +35,7 @@ export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
       }
 
       // Create order in database
-      const { data: order, error } = await supabase
+      const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
           total_amount: total,
@@ -45,17 +45,33 @@ export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
         .select()
         .single();
 
-      if (error) {
-        console.error('Checkout error:', error);
-        throw error;
+      if (orderError) {
+        console.error('Order creation error:', orderError);
+        throw orderError;
       }
 
-      toast({
-        title: "Success",
-        description: "Order placed successfully!",
+      // Create Stripe checkout session
+      const response = await fetch('/functions/v1/create-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+        },
+        body: JSON.stringify({
+          items,
+          total
+        })
       });
+
+      const { url, error } = await response.json();
       
-      onSuccess();
+      if (error) {
+        throw new Error(error);
+      }
+
+      // Redirect to Stripe checkout
+      window.location.href = url;
+      
     } catch (error: any) {
       toast({
         title: "Error",
