@@ -57,19 +57,18 @@ export function CartCheckout({ items, total, onSuccess }: CartCheckoutProps) {
         }
       );
 
+      const data = await response.json();
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create checkout session');
+        throw new Error(data.error || 'Failed to create checkout session');
       }
 
-      const { url } = await response.json();
-      
-      if (!url) {
+      if (!data.url) {
         throw new Error('No checkout URL received');
       }
 
       // Redirect to Stripe checkout
-      window.location.href = url;
+      window.location.href = data.url;
       onSuccess();
       
     } catch (error: any) {

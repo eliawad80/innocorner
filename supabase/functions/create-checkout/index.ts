@@ -5,6 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Content-Type': 'application/json',
 };
 
 serve(async (req) => {
@@ -17,7 +18,10 @@ serve(async (req) => {
     const { items } = await req.json();
 
     if (!items || !Array.isArray(items)) {
-      throw new Error('Invalid items data');
+      return new Response(
+        JSON.stringify({ error: 'Invalid items data' }),
+        { status: 400, headers: corsHeaders }
+      );
     }
 
     // Initialize Stripe
@@ -43,27 +47,17 @@ serve(async (req) => {
       cancel_url: `${req.headers.get('origin')}/cancel`,
     });
 
+    // Return the session URL in a properly formatted JSON response
     return new Response(
       JSON.stringify({ url: session.url }),
-      { 
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
-      },
+      { headers: corsHeaders }
     );
 
   } catch (error) {
     console.error('Checkout error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      { 
-        status: 400,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
-      },
+      { status: 400, headers: corsHeaders }
     );
   }
 });
