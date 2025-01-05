@@ -25,19 +25,19 @@ const Contact = () => {
             <div className="space-y-4">
               <p className="flex items-center gap-2">
                 <span className="font-semibold">Email:</span>
-                <a href="mailto:contact@innocorner.com" className="text-primary hover:underline">
-                  contact@innocorner.com
+                <a href="mailto:info@innocorner.com" className="text-primary hover:underline">
+                  info@innocorner.com
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <span className="font-semibold">Phone:</span>
-                <a href="tel:+1234567890" className="text-primary hover:underline">
-                  (123) 456-7890
+                <a href="tel:+32026467974" className="text-primary hover:underline">
+                  +32 02 646 79 74
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <span className="font-semibold">Address:</span>
-                <span>123 InnoCorner Street, City, Country</span>
+                <span>Avenue du Parc 200, 1060 Brussels</span>
               </p>
             </div>
           </div>
