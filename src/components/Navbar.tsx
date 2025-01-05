@@ -25,33 +25,41 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="border-b">
+    <nav className="border-b bg-white shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="text-xl font-bold">
-            InnoCorner
+          <Link to="/" className="flex items-center space-x-2">
+            <img 
+              src="/lovable-uploads/af45abc9-729e-4fce-8df2-33470279c418.png" 
+              alt="InnoCorner Logo" 
+              className="h-12 w-auto"
+            />
           </Link>
           
           <div className="hidden md:flex space-x-4">
             <Link to="/">
-              <Button variant="ghost">Home</Button>
+              <Button variant="ghost" className="text-foreground hover:text-primary">Home</Button>
             </Link>
             <Link to="/products">
-              <Button variant="ghost">Products</Button>
+              <Button variant="ghost" className="text-foreground hover:text-primary">Products</Button>
             </Link>
             <Link to="/about">
-              <Button variant="ghost">About</Button>
+              <Button variant="ghost" className="text-foreground hover:text-primary">About</Button>
             </Link>
             <Link to="/contact">
-              <Button variant="ghost">Contact</Button>
+              <Button variant="ghost" className="text-foreground hover:text-primary">Contact</Button>
             </Link>
             {isAuthenticated ? (
-              <Button variant="ghost" onClick={handleLogout}>
+              <Button 
+                variant="ghost" 
+                onClick={handleLogout}
+                className="text-foreground hover:text-primary"
+              >
                 Logout
               </Button>
             ) : (
               <Link to="/login">
-                <Button variant="ghost">Login</Button>
+                <Button variant="ghost" className="text-foreground hover:text-primary">Login</Button>
               </Link>
             )}
           </div>
