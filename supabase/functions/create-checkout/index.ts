@@ -15,6 +15,15 @@ serve(async (req) => {
   }
 
   try {
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+    if (!stripeKey) {
+      console.error('Stripe secret key is not configured');
+      return new Response(
+        JSON.stringify({ error: 'Stripe configuration error' }),
+        { status: 500, headers: corsHeaders }
+      );
+    }
+
     const { items } = await req.json();
 
     if (!items || !Array.isArray(items)) {
@@ -24,11 +33,13 @@ serve(async (req) => {
       );
     }
 
-    // Initialize Stripe
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+    // Initialize Stripe with proper error handling
+    const stripe = new Stripe(stripeKey, {
       apiVersion: '2023-10-16',
     });
 
+    console.log('Creating checkout session...');
+    
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -46,6 +57,8 @@ serve(async (req) => {
       success_url: `${req.headers.get('origin')}/success`,
       cancel_url: `${req.headers.get('origin')}/cancel`,
     });
+
+    console.log('Checkout session created successfully:', session.id);
 
     // Return the session URL in a properly formatted JSON response
     return new Response(
