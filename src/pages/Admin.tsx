@@ -73,18 +73,25 @@ const Admin = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/admin/change-password', {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('No active session');
+
+      const response = await fetch('/admin-auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
-          newPassword,
+          action: 'change-password',
+          username: session.user.email,
+          newPassword: newPassword,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to change password');
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to change password');
       }
 
       toast({
@@ -94,9 +101,10 @@ const Admin = () => {
       setShowPasswordChange(false);
       setNewPassword("");
     } catch (error) {
+      console.error('Password change error:', error);
       toast({
         title: "Error",
-        description: "Failed to change password",
+        description: error instanceof Error ? error.message : "Failed to change password",
         variant: "destructive",
       });
     } finally {
@@ -131,6 +139,7 @@ const Admin = () => {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
+                minLength={6}
               />
             </div>
             <Button type="submit" disabled={loading}>
