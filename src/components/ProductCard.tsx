@@ -1,19 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Minus, Info } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Info } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ServiceImage } from "./ServiceImage";
+import { ServiceQuantityControl } from "./ServiceQuantityControl";
+import { ServiceDialog } from "./ServiceDialog";
 
 interface ProductCardProps {
   id: number;
@@ -42,8 +38,8 @@ export function ProductCard({
       setQuantity(prev => prev + 1);
     } else {
       toast({
-        title: "Stock limit reached",
-        description: `Only ${stock} items available`,
+        title: "Slot limit reached",
+        description: `Only ${stock} slots available`,
         variant: "destructive",
       });
     }
@@ -61,8 +57,8 @@ export function ProductCard({
       } else {
         setQuantity(stock);
         toast({
-          title: "Stock limit reached",
-          description: `Only ${stock} items available`,
+          title: "Slot limit reached",
+          description: `Only ${stock} slots available`,
           variant: "destructive",
         });
       }
@@ -72,62 +68,30 @@ export function ProductCard({
   return (
     <>
       <div className="product-card group bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
-        <div 
-          className="relative aspect-square cursor-pointer"
+        <ServiceImage
+          image={image}
+          name={name}
           onClick={() => setIsDialogOpen(true)}
         >
-          <img 
-            src={image} 
-            alt={name} 
-            className="w-full h-full object-cover"
+          <ServiceQuantityControl
+            quantity={quantity}
+            stock={stock}
+            onIncrement={incrementQuantity}
+            onDecrement={decrementQuantity}
+            onChange={handleQuantityChange}
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
-            <div className="flex items-center gap-2 bg-white/90 p-2 rounded-lg">
-              <Button 
-                variant="outline" 
-                size="icon" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  decrementQuantity();
-                }}
-                className="h-8 w-8"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <Input
-                type="number"
-                min="1"
-                max={stock}
-                value={quantity}
-                onChange={handleQuantityChange}
-                onClick={(e) => e.stopPropagation()}
-                className="w-16 h-8 text-center"
-              />
-              <Button 
-                variant="outline" 
-                size="icon" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  incrementQuantity();
-                }}
-                className="h-8 w-8"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-            <Button 
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddToCart(quantity);
-              }} 
-              variant="secondary" 
-              className="bg-white/90 hover:bg-white"
-              disabled={stock === 0}
-            >
-              {stock === 0 ? "Out of Stock" : "Add to Cart"}
-            </Button>
-          </div>
-        </div>
+          <Button 
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart(quantity);
+            }} 
+            variant="secondary" 
+            className="bg-white/90 hover:bg-white"
+            disabled={stock === 0}
+          >
+            {stock === 0 ? "No Slots Available" : "Book Service"}
+          </Button>
+        </ServiceImage>
         <div className="p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 
@@ -151,72 +115,28 @@ export function ProductCard({
           </div>
           <div className="flex justify-between items-center">
             <p className="text-lg font-bold text-primary">${price.toFixed(2)}</p>
-            <p className="text-sm text-gray-500">{stock} in stock</p>
+            <p className="text-sm text-gray-500">{stock} slots available</p>
           </div>
         </div>
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>{name}</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-6">
-            <div className="aspect-video relative overflow-hidden rounded-lg">
-              <img 
-                src={image} 
-                alt={name} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {description && (
-              <p className="text-gray-600">{description}</p>
-            )}
-            <div className="flex justify-between items-center">
-              <p className="text-2xl font-bold text-primary">${price.toFixed(2)}</p>
-              <p className="text-gray-500">{stock} in stock</p>
-            </div>
-            <div className="flex justify-between items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  onClick={decrementQuantity}
-                  className="h-8 w-8"
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <Input
-                  type="number"
-                  min="1"
-                  max={stock}
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  className="w-16 h-8 text-center"
-                />
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  onClick={incrementQuantity}
-                  className="h-8 w-8"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-              <Button 
-                onClick={() => {
-                  onAddToCart(quantity);
-                  setIsDialogOpen(false);
-                }} 
-                className="flex-1"
-                disabled={stock === 0}
-              >
-                {stock === 0 ? "Out of Stock" : "Add to Cart"}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ServiceDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        name={name}
+        description={description}
+        image={image}
+        price={price}
+        stock={stock}
+        quantity={quantity}
+        onQuantityChange={handleQuantityChange}
+        onIncrement={incrementQuantity}
+        onDecrement={decrementQuantity}
+        onAddToCart={() => {
+          onAddToCart(quantity);
+          setIsDialogOpen(false);
+        }}
+      />
     </>
   );
 }
