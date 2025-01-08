@@ -17,9 +17,9 @@ const Home = () => {
             and individuals achieve their goals through secure, efficient, and scalable solutions.
           </p>
           <div className="pt-8 flex flex-wrap gap-4 justify-center">
-            <Link to="/products">
+            <Link to="/contact">
               <Button size="lg" className="text-lg">
-                Explore Products
+                Get Started
               </Button>
             </Link>
             <Link to="/contact">
@@ -73,40 +73,6 @@ const Home = () => {
             <Card className="group hover:shadow-lg transition-all duration-300">
               <CardContent className="p-6">
                 <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Cloud className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
-                  Cloud Migration Service
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Comprehensive cloud migration service to help transition your infrastructure to the cloud seamlessly and securely.
-                </p>
-                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
-                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-6">
-                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Code className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
-                  Infrastructure as Code
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Transform your infrastructure management with our Infrastructure as Code service. We help implement and maintain automated, version-controlled infrastructure.
-                </p>
-                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
-                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
-                </Link>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-6">
-                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
                   <Shield className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
@@ -114,6 +80,40 @@ const Home = () => {
                 </h3>
                 <p className="text-gray-600 mb-4">
                   Thorough security assessment of your cloud infrastructure and applications. Includes vulnerability scanning, compliance checking, and detailed recommendations.
+                </p>
+                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
+                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
+                  <BarChart className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
+                  Performance Optimization
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Comprehensive analysis and optimization of your systems for maximum performance. We identify bottlenecks and implement solutions for better efficiency.
+                </p>
+                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
+                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
+                  Team Training
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Customized training programs for your team on cloud technologies, DevOps practices, and security best practices. Build internal expertise and capabilities.
                 </p>
                 <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
                   Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
