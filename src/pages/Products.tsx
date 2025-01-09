@@ -10,7 +10,8 @@ const Products = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("*");
+        .select("*")
+        .order('created_at', { ascending: false });
       
       if (error) throw error;
       return data as Product[];
@@ -22,8 +23,8 @@ const Products = () => {
     return (
       <div className="min-h-screen bg-white p-8">
         <div className="container mx-auto">
-          <h1 className="text-2xl font-bold mb-8">Our Products</h1>
-          <p className="text-red-500">Error loading products. Please try again later.</p>
+          <h1 className="text-2xl font-bold mb-8">Our Services</h1>
+          <p className="text-red-500">Error loading services. Please try again later.</p>
         </div>
       </div>
     );
@@ -36,7 +37,7 @@ const Products = () => {
   return (
     <div className="min-h-screen bg-white p-8">
       <div className="container mx-auto">
-        <h1 className="text-2xl font-bold mb-8">Our Products</h1>
+        <h1 className="text-2xl font-bold mb-8">Our Services</h1>
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((n) => (
