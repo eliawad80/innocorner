@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Settings, Users, Zap, BarChart } from "lucide-react";
+import { ArrowRight, Settings, Users, Zap, BarChart, Cloud, Code, Shield, ArrowUpRight } from "lucide-react";
 
 const Home = () => {
   return (
@@ -17,9 +17,9 @@ const Home = () => {
             and individuals achieve their goals through secure, efficient, and scalable solutions.
           </p>
           <div className="pt-8 flex flex-wrap gap-4 justify-center">
-            <Link to="/products">
+            <Link to="/contact">
               <Button size="lg" className="text-lg">
-                Explore Products
+                Get Started
               </Button>
             </Link>
             <Link to="/contact">
@@ -35,52 +35,89 @@ const Home = () => {
       <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="group hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
                 <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Settings className="h-6 w-6 text-primary" />
+                  <Cloud className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-xl mb-2">IT Task Automation</h3>
-                <p className="text-gray-600">
-                  Streamline your operations with cutting-edge automation solutions.
+                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
+                  Cloud Architecture Design
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Expert cloud architecture design and optimization services. We help design scalable, secure and cost-effective cloud infrastructure tailored to your needs.
                 </p>
+                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
+                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <div className="rounded-full bg-secondary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Zap className="h-6 w-6 text-secondary" />
+            <Card className="group hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
+                  <Code className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-xl mb-2">Workflow Optimization</h3>
-                <p className="text-gray-600">
-                  Enhance efficiency through optimized business processes.
+                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
+                  DevOps Implementation
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  End-to-end DevOps implementation service. We help streamline your development pipeline, implement CI/CD, and optimize your deployment processes.
                 </p>
+                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
+                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
+            <Card className="group hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
+                  Security Assessment
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Thorough security assessment of your cloud infrastructure and applications. Includes vulnerability scanning, compliance checking, and detailed recommendations.
+                </p>
+                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
+                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
+                  <BarChart className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
+                  Performance Optimization
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Comprehensive analysis and optimization of your systems for maximum performance. We identify bottlenecks and implement solutions for better efficiency.
+                </p>
+                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
+                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
                 <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-xl mb-2">Strategic Consulting</h3>
-                <p className="text-gray-600">
-                  Expert guidance for aligning technology with business objectives.
+                <h3 className="font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
+                  Team Training
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Customized training programs for your team on cloud technologies, DevOps practices, and security best practices. Build internal expertise and capabilities.
                 </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <div className="rounded-full bg-secondary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <BarChart className="h-6 w-6 text-secondary" />
-                </div>
-                <h3 className="font-semibold text-xl mb-2">Performance Analytics</h3>
-                <p className="text-gray-600">
-                  Data-driven insights to optimize your business performance.
-                </p>
+                <Link to="/contact" className="inline-flex items-center text-primary hover:text-primary/80">
+                  Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
+                </Link>
               </CardContent>
             </Card>
           </div>

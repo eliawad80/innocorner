@@ -7,7 +7,6 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 
@@ -22,7 +21,6 @@ const App = () => (
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
