@@ -5,62 +5,33 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-async function generateAndUploadImages() {
-  const prompts = [
-    "Professional office workers in a training session about cybersecurity, modern corporate setting",
-    "Family sitting together at home learning about online safety, warm and educational setting"
-  ]
+async function updateProductImages() {
+  // Map of product IDs to their corresponding image filenames
+  const productImages = {
+    1: 'af45abc9-729e-4fce-8df2-33470279c418.png', // Professional office workers image
+    2: 'af45abc9-729e-4fce-8df2-33470279c418.png'  // Family learning image
+  }
 
-  for (let i = 0; i < prompts.length; i++) {
+  for (const [productId, filename] of Object.entries(productImages)) {
     try {
-      // Generate image
-      const response = await fetch(
-        `${process.env.SUPABASE_URL}/functions/v1/generate-product-image`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ prompt: prompts[i] }),
-        }
-      )
-
-      const { image } = await response.json()
-
-      // Convert base64 to blob
-      const base64Data = image.replace(/^data:image\/\w+;base64,/, '')
-      const imageBlob = Buffer.from(base64Data, 'base64')
-
-      // Upload to Supabase Storage
-      const fileName = `product_${i + 1}_${Date.now()}.png`
-      const { error: uploadError } = await supabase.storage
-        .from('products')
-        .upload(fileName, imageBlob, {
-          contentType: 'image/png',
-          upsert: false
-        })
-
-      if (uploadError) throw uploadError
-
-      // Get public URL
+      // Get public URL for the existing image
       const { data: { publicUrl } } = supabase.storage
         .from('products')
-        .getPublicUrl(fileName)
+        .getPublicUrl(`lovable-uploads/${filename}`)
 
-      // Update product in database
+      // Update product with the image URL
       const { error: updateError } = await supabase
         .from('products')
         .update({ image: publicUrl })
-        .eq('id', i + 1)
+        .eq('id', parseInt(productId))
 
       if (updateError) throw updateError
 
-      console.log(`Successfully updated product ${i + 1} with image`)
+      console.log(`Successfully updated product ${productId} with image`)
     } catch (error) {
-      console.error(`Error processing product ${i + 1}:`, error)
+      console.error(`Error processing product ${productId}:`, error)
     }
   }
 }
 
-generateAndUploadImages()
+updateProductImages()
