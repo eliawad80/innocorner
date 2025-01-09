@@ -1,11 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Settings, Users, Zap, BarChart, Cloud, Code, Shield, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Settings, Users, Zap, BarChart, Cloud, Code, Shield, ArrowUpRight, ArrowDown } from "lucide-react";
 
 const Home = () => {
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById('services-section');
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center space-y-4 max-w-4xl mx-auto">
@@ -17,22 +24,25 @@ const Home = () => {
             and individuals achieve their goals through secure, efficient, and scalable solutions.
           </p>
           <div className="pt-8 flex flex-wrap gap-4 justify-center">
-            <Link to="/contact">
+            <Link to="/products">
               <Button size="lg" className="text-lg">
-                Get Started
+                Go to Products
               </Button>
             </Link>
-            <Link to="/contact">
-              <Button size="lg" variant="outline" className="text-lg">
-                Contact Us
-              </Button>
-            </Link>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg"
+              onClick={scrollToServices}
+            >
+              Our Services <ArrowDown className="ml-2 h-4 w-4" />
+            </Button>
           </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="bg-gray-50 py-16">
+      <section id="services-section" className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -125,7 +135,7 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Choose InnoCorner?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
