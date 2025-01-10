@@ -8,19 +8,23 @@ import { ArrowLeft } from "lucide-react";
 const ServiceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const numericId = id ? parseInt(id) : undefined;
 
   const { data: service, isLoading } = useQuery({
-    queryKey: ["service", id],
+    queryKey: ["service", numericId],
     queryFn: async () => {
+      if (!numericId) throw new Error("Invalid ID");
+      
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .eq("id", id)
+        .eq("id", numericId)
         .single();
 
       if (error) throw error;
       return data;
     },
+    enabled: !!numericId && !isNaN(numericId),
   });
 
   const getDetailedDescription = (name: string) => {
@@ -122,7 +126,7 @@ const ServiceDetails = () => {
     );
   }
 
-  if (!service) {
+  if (!service || !numericId || isNaN(numericId)) {
     return (
       <div className="min-h-screen bg-white p-8">
         <div className="container mx-auto">
