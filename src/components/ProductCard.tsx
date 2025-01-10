@@ -1,19 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Minus, Info } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface ProductCardProps {
   id: number;
@@ -21,20 +10,11 @@ interface ProductCardProps {
   price: number;
   image: string;
   stock: number;
-  description: string | null;
   onAddToCart: (quantity: number) => void;
 }
 
-export function ProductCard({ 
-  name, 
-  price, 
-  image, 
-  stock, 
-  description, 
-  onAddToCart 
-}: ProductCardProps) {
+export function ProductCard({ name, price, image, stock, onAddToCart }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const incrementQuantity = () => {
@@ -70,153 +50,51 @@ export function ProductCard({
   };
 
   return (
-    <>
-      <div className="product-card group bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
-        <div 
-          className="relative aspect-square cursor-pointer"
-          onClick={() => setIsDialogOpen(true)}
-        >
-          <img 
-            src={image} 
-            alt={name} 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
-            <div className="flex items-center gap-2 bg-white/90 p-2 rounded-lg">
-              <Button 
-                variant="outline" 
-                size="icon" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  decrementQuantity();
-                }}
-                className="h-8 w-8"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <Input
-                type="number"
-                min="1"
-                max={stock}
-                value={quantity}
-                onChange={handleQuantityChange}
-                onClick={(e) => e.stopPropagation()}
-                className="w-16 h-8 text-center"
-              />
-              <Button 
-                variant="outline" 
-                size="icon" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  incrementQuantity();
-                }}
-                className="h-8 w-8"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
+    <div className="product-card group">
+      <div className="relative">
+        <img src={image} alt={name} className="product-image" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-2 bg-white/90 p-2 rounded-lg">
             <Button 
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddToCart(quantity);
-              }} 
-              variant="secondary" 
-              className="bg-white/90 hover:bg-white"
-              disabled={stock === 0}
+              variant="outline" 
+              size="icon" 
+              onClick={decrementQuantity}
+              className="h-8 w-8"
             >
-              {stock === 0 ? "Out of Stock" : "Add to Cart"}
+              <Minus className="h-4 w-4" />
+            </Button>
+            <Input
+              type="number"
+              min="1"
+              max={stock}
+              value={quantity}
+              onChange={handleQuantityChange}
+              className="w-16 h-8 text-center"
+            />
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={incrementQuantity}
+              className="h-8 w-8"
+            >
+              <Plus className="h-4 w-4" />
             </Button>
           </div>
-        </div>
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <h3 
-              className="font-semibold text-lg cursor-pointer hover:text-primary"
-              onClick={() => setIsDialogOpen(true)}
-            >
-              {name}
-            </h3>
-            {description && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <Info className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="max-w-xs">{description}</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-lg font-bold text-primary">${price.toFixed(2)}</p>
-            <p className="text-sm text-gray-500">{stock} in stock</p>
-          </div>
+          <Button 
+            onClick={() => onAddToCart(quantity)} 
+            variant="secondary" 
+            className="bg-white/90 hover:bg-white"
+            disabled={stock === 0}
+          >
+            {stock === 0 ? "Out of Stock" : "Add to Cart"}
+          </Button>
         </div>
       </div>
-
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>{name}</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-6">
-            <div className="aspect-video relative overflow-hidden rounded-lg">
-              <img 
-                src={image} 
-                alt={name} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {description && (
-              <p className="text-gray-600">{description}</p>
-            )}
-            <div className="flex justify-between items-center">
-              <p className="text-2xl font-bold text-primary">${price.toFixed(2)}</p>
-              <p className="text-gray-500">{stock} in stock</p>
-            </div>
-            <div className="flex justify-between items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  onClick={decrementQuantity}
-                  className="h-8 w-8"
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <Input
-                  type="number"
-                  min="1"
-                  max={stock}
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  className="w-16 h-8 text-center"
-                />
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  onClick={incrementQuantity}
-                  className="h-8 w-8"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-              <Button 
-                onClick={() => {
-                  onAddToCart(quantity);
-                  setIsDialogOpen(false);
-                }} 
-                className="flex-1"
-                disabled={stock === 0}
-              >
-                {stock === 0 ? "Out of Stock" : "Add to Cart"}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+      <div className="mt-2">
+        <h3 className="font-semibold">{name}</h3>
+        <p className="text-sm text-gray-600">${price.toFixed(2)}</p>
+        <p className="text-sm text-gray-500">{stock} in stock</p>
+      </div>
+    </div>
   );
 }
