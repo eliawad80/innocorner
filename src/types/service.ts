@@ -7,7 +7,7 @@ export interface Service {
   price: number;
   image: string;
   detailed_description: string | null;
-  features: string[] | null;
-  benefits: string[] | null;
+  features: string[];
+  benefits: string[];
   created_at?: string;
 }

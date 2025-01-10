@@ -4,6 +4,7 @@ import { Cart } from "@/components/Cart";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Service } from "@/types/service";
+import { Json } from "@/integrations/supabase/types";
 
 interface CartItem {
   id: number;
@@ -39,8 +40,8 @@ const Index = () => {
     // Transform the data to ensure features and benefits are string arrays
     const transformedData = data.map(service => ({
       ...service,
-      features: Array.isArray(service.features) ? service.features : [],
-      benefits: Array.isArray(service.benefits) ? service.benefits : [],
+      features: (service.features as Json[] || []).map(item => String(item)),
+      benefits: (service.benefits as Json[] || []).map(item => String(item)),
     }));
 
     setServices(transformedData);
