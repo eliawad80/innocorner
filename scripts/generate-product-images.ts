@@ -17,7 +17,7 @@ async function updateProductImages() {
       // Get public URL for the existing image
       const { data: { publicUrl } } = supabase.storage
         .from('products')
-        .getPublicUrl(`lovable-uploads/${filename}`)
+        .getPublicUrl(filename)
 
       // Update product with the image URL
       const { error: updateError } = await supabase
