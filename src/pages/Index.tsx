@@ -36,7 +36,14 @@ const Index = () => {
       return;
     }
 
-    setServices(data);
+    // Transform the data to ensure features and benefits are string arrays
+    const transformedData = data.map(service => ({
+      ...service,
+      features: Array.isArray(service.features) ? service.features : [],
+      benefits: Array.isArray(service.benefits) ? service.benefits : [],
+    }));
+
+    setServices(transformedData);
   };
 
   const addToCart = (service: Service, quantity: number) => {

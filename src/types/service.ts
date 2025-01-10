@@ -1,11 +1,13 @@
+import { Json } from "@/integrations/supabase/types";
+
 export interface Service {
   id: number;
   name: string;
+  description: string | null;
   price: number;
   image: string;
-  description: string | null;
   detailed_description: string | null;
-  features: string[];
-  benefits: string[];
+  features: string[] | null;
+  benefits: string[] | null;
   created_at?: string;
 }
