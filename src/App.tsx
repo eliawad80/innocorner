@@ -7,10 +7,9 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
-import Services from "./pages/Services";
-import ServiceDetails from "./pages/ServiceDetails";
 
 const queryClient = new QueryClient();
 
@@ -23,12 +22,11 @@ const App = () => (
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/service/:id" element={<ServiceDetails />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

@@ -3,8 +3,15 @@ import { ProductCard } from "@/components/ProductCard";
 import { Cart } from "@/components/Cart";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { Service } from "@/types/service";
-import { Json } from "@/integrations/supabase/types";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string | null;
+  stock: number;
+}
 
 interface CartItem {
   id: number;
@@ -15,60 +22,63 @@ interface CartItem {
 
 const Index = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchServices();
+    fetchProducts();
   }, []);
 
-  const fetchServices = async () => {
+  const fetchProducts = async () => {
     const { data, error } = await supabase
-      .from("services")
+      .from("products")
       .select("*")
       .order("id");
 
     if (error) {
       toast({
         title: "Error",
-        description: "Failed to fetch services",
+        description: "Failed to fetch products",
         variant: "destructive",
       });
       return;
     }
 
-    // Transform the data to ensure features and benefits are string arrays
-    const transformedData = data.map(service => ({
-      ...service,
-      features: (service.features as Json[] || []).map(item => String(item)),
-      benefits: (service.benefits as Json[] || []).map(item => String(item)),
-    }));
-
-    setServices(transformedData);
+    setProducts(data);
   };
 
-  const addToCart = (service: Service, quantity: number) => {
+  const addToCart = (product: Product, quantity: number) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === service.id);
+      const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
-        return prev.map((item) =>
-          item.id === service.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+        const newQuantity = existingItem.quantity + quantity;
+        if (newQuantity <= product.stock) {
+          return prev.map((item) =>
+            item.id === product.id
+              ? { ...item, quantity: newQuantity }
+              : item
+          );
+        } else {
+          toast({
+            title: "Stock limit reached",
+            description: `Only ${product.stock} items available`,
+            variant: "destructive",
+          });
+          return prev;
+        }
       }
-      return [...prev, { id: service.id, name: service.name, price: service.price, quantity }];
+      return [...prev, { ...product, quantity }];
     });
   };
 
-  const removeFromCart = (serviceId: number) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== serviceId));
+  const removeFromCart = (productId: number) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== productId));
   };
 
-  const updateCartItemQuantity = (serviceId: number, quantity: number) => {
+  const updateCartItemQuantity = (productId: number, quantity: number) => {
     setCartItems(prev => 
       prev.map(item => 
-        item.id === serviceId 
+        item.id === productId 
           ? { ...item, quantity } 
           : item
       )
@@ -76,7 +86,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <header className="border-b bg-white">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">High-Tech Innovation Hub</h1>
@@ -90,22 +100,17 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Our Services</h2>
+          <h2 className="text-3xl font-bold mb-4">Featured Tech Products</h2>
           <p className="text-gray-600">
-            Discover our range of innovative technology services designed to transform your business.
+            Discover our curated selection of cutting-edge technology solutions designed to transform your digital experience.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service) => (
+          {products.map((product) => (
             <ProductCard
-              key={service.id}
-              id={service.id}
-              name={service.name}
-              price={service.price}
-              image={service.image}
-              description={service.description}
-              stock={1}
-              onAddToCart={(quantity) => addToCart(service, quantity)}
+              key={product.id}
+              {...product}
+              onAddToCart={(quantity) => addToCart(product, quantity)}
             />
           ))}
         </div>

@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Plus, Minus, Info } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Info } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ServiceImage } from "./ServiceImage";
-import { ServiceQuantityControl } from "./ServiceQuantityControl";
-import { ServiceDialog } from "./ServiceDialog";
 
 interface ProductCardProps {
   id: number;
@@ -23,7 +26,6 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ 
-  id,
   name, 
   price, 
   image, 
@@ -34,15 +36,14 @@ export function ProductCard({
   const [quantity, setQuantity] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   const incrementQuantity = () => {
     if (quantity < stock) {
       setQuantity(prev => prev + 1);
     } else {
       toast({
-        title: "Slot limit reached",
-        description: `Only ${stock} slots available`,
+        title: "Stock limit reached",
+        description: `Only ${stock} items available`,
         variant: "destructive",
       });
     }
@@ -60,88 +61,162 @@ export function ProductCard({
       } else {
         setQuantity(stock);
         toast({
-          title: "Slot limit reached",
-          description: `Only ${stock} slots available`,
+          title: "Stock limit reached",
+          description: `Only ${stock} items available`,
           variant: "destructive",
         });
       }
     }
   };
 
-  const handleServiceClick = () => {
-    navigate(`/service/${id}`);
-  };
-
   return (
     <>
       <div className="product-card group bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
-        <ServiceImage
-          image={image}
-          name={name}
-          onClick={handleServiceClick}
+        <div 
+          className="relative aspect-square cursor-pointer"
+          onClick={() => setIsDialogOpen(true)}
         >
-          <ServiceQuantityControl
-            quantity={quantity}
-            stock={stock}
-            onIncrement={incrementQuantity}
-            onDecrement={decrementQuantity}
-            onChange={handleQuantityChange}
+          <img 
+            src={image} 
+            alt={name} 
+            className="w-full h-full object-cover"
           />
-          <Button 
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToCart(quantity);
-            }} 
-            variant="secondary" 
-            className="bg-white/90 hover:bg-white"
-            disabled={stock === 0}
-          >
-            {stock === 0 ? "No Slots Available" : "Book Service"}
-          </Button>
-        </ServiceImage>
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
+            <div className="flex items-center gap-2 bg-white/90 p-2 rounded-lg">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  decrementQuantity();
+                }}
+                className="h-8 w-8"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <Input
+                type="number"
+                min="1"
+                max={stock}
+                value={quantity}
+                onChange={handleQuantityChange}
+                onClick={(e) => e.stopPropagation()}
+                className="w-16 h-8 text-center"
+              />
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  incrementQuantity();
+                }}
+                className="h-8 w-8"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+            <Button 
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart(quantity);
+              }} 
+              variant="secondary" 
+              className="bg-white/90 hover:bg-white"
+              disabled={stock === 0}
+            >
+              {stock === 0 ? "Out of Stock" : "Add to Cart"}
+            </Button>
+          </div>
+        </div>
         <div className="p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 
               className="font-semibold text-lg cursor-pointer hover:text-primary"
-              onClick={handleServiceClick}
+              onClick={() => setIsDialogOpen(true)}
             >
               {name}
             </h3>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-6 w-6">
-                  <Info className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="max-w-xs">{description}</p>
-              </TooltipContent>
-            </Tooltip>
+            {description && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-6 w-6">
+                    <Info className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs">{description}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
           </div>
           <div className="flex justify-between items-center">
             <p className="text-lg font-bold text-primary">${price.toFixed(2)}</p>
-            <p className="text-sm text-gray-500">{stock} slots available</p>
+            <p className="text-sm text-gray-500">{stock} in stock</p>
           </div>
         </div>
       </div>
 
-      <ServiceDialog
-        isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        name={name}
-        description={description}
-        image={image}
-        price={price}
-        stock={stock}
-        quantity={quantity}
-        onQuantityChange={handleQuantityChange}
-        onIncrement={incrementQuantity}
-        onDecrement={decrementQuantity}
-        onAddToCart={() => {
-          onAddToCart(quantity);
-          setIsDialogOpen(false);
-        }}
-      />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>{name}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-6">
+            <div className="aspect-video relative overflow-hidden rounded-lg">
+              <img 
+                src={image} 
+                alt={name} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {description && (
+              <p className="text-gray-600">{description}</p>
+            )}
+            <div className="flex justify-between items-center">
+              <p className="text-2xl font-bold text-primary">${price.toFixed(2)}</p>
+              <p className="text-gray-500">{stock} in stock</p>
+            </div>
+            <div className="flex justify-between items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  onClick={decrementQuantity}
+                  className="h-8 w-8"
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+                <Input
+                  type="number"
+                  min="1"
+                  max={stock}
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                  className="w-16 h-8 text-center"
+                />
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  onClick={incrementQuantity}
+                  className="h-8 w-8"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+              <Button 
+                onClick={() => {
+                  onAddToCart(quantity);
+                  setIsDialogOpen(false);
+                }} 
+                className="flex-1"
+                disabled={stock === 0}
+              >
+                {stock === 0 ? "Out of Stock" : "Add to Cart"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
