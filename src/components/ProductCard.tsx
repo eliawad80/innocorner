@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +23,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ 
+  id,
   name, 
   price, 
   image, 
@@ -32,6 +34,7 @@ export function ProductCard({
   const [quantity, setQuantity] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const incrementQuantity = () => {
     if (quantity < stock) {
@@ -65,13 +68,17 @@ export function ProductCard({
     }
   };
 
+  const handleServiceClick = () => {
+    navigate(`/service/${id}`);
+  };
+
   return (
     <>
       <div className="product-card group bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
         <ServiceImage
           image={image}
           name={name}
-          onClick={() => setIsDialogOpen(true)}
+          onClick={handleServiceClick}
         >
           <ServiceQuantityControl
             quantity={quantity}
@@ -96,22 +103,20 @@ export function ProductCard({
           <div className="flex justify-between items-start mb-2">
             <h3 
               className="font-semibold text-lg cursor-pointer hover:text-primary"
-              onClick={() => setIsDialogOpen(true)}
+              onClick={handleServiceClick}
             >
               {name}
             </h3>
-            {description && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6">
-                    <Info className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="max-w-xs">{description}</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-6 w-6">
+                  <Info className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">{description}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
           <div className="flex justify-between items-center">
             <p className="text-lg font-bold text-primary">${price.toFixed(2)}</p>
