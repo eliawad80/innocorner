@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import ServicePage from "./pages/ServicePage";
 import { Toaster } from "./components/ui/toaster";
-import { Navbar } from "./components/Navbar";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (

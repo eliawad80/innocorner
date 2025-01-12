@@ -10,8 +10,10 @@ interface Service {
   description: string | null;
   detailed_description: string | null;
   image: string;
-  features: string[] | null;
-  benefits: string[] | null;
+  features: string[];
+  benefits: string[];
+  price: number;
+  created_at: string;
 }
 
 const ServicePage = () => {
@@ -24,7 +26,7 @@ const ServicePage = () => {
       const { data, error } = await supabase
         .from("services")
         .select("*")
-        .eq("id", id)
+        .eq("id", parseInt(id || "0"))
         .single();
 
       if (error) {
@@ -36,7 +38,14 @@ const ServicePage = () => {
         return;
       }
 
-      setService(data);
+      // Convert JSON fields to arrays
+      const processedData: Service = {
+        ...data,
+        features: Array.isArray(data.features) ? data.features : [],
+        benefits: Array.isArray(data.benefits) ? data.benefits : []
+      };
+
+      setService(processedData);
     };
 
     fetchService();
