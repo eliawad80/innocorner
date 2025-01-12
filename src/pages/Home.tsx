@@ -53,7 +53,26 @@ const Home = () => {
         return;
       }
 
-      setContent(data.content as HomeContent);
+      // Type guard to verify the shape of the data
+      const isHomeContent = (data: any): data is { content: HomeContent } => {
+        return (
+          data?.content?.hero?.title !== undefined &&
+          data?.content?.hero?.subtitle !== undefined &&
+          data?.content?.whyChooseUs?.title !== undefined &&
+          Array.isArray(data?.content?.whyChooseUs?.items)
+        );
+      };
+
+      if (!isHomeContent(data)) {
+        toast({
+          title: "Error",
+          description: "Invalid page content format",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setContent(data.content);
     };
 
     const fetchServices = async () => {
