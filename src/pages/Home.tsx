@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Settings, Users, Zap, BarChart, Bot, Cloud, Database } from "lucide-react";
+import { ArrowRight, Settings, Bot, Cloud, Database } from "lucide-react";
 
 const Home = () => {
+  const scrollToServices = () => {
+    document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -22,17 +26,20 @@ const Home = () => {
                 Explore Products
               </Button>
             </Link>
-            <Link to="/contact">
-              <Button size="lg" variant="outline" className="text-lg">
-                Contact Us
-              </Button>
-            </Link>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg"
+              onClick={scrollToServices}
+            >
+              Services
+            </Button>
           </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="bg-gray-50 py-16">
+      <section id="services" className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
