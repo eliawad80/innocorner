@@ -2,10 +2,59 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Settings, Bot, Cloud, Database } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
+
+interface Service {
+  id: number;
+  name: string;
+  description: string | null;
+  image: string;
+}
 
 const Home = () => {
+  const [services, setServices] = useState<Service[]>([]);
+  const { toast } = useToast();
+
   const scrollToServices = () => {
     document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select("id, name, description, image");
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to fetch services",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setServices(data);
+    };
+
+    fetchServices();
+  }, [toast]);
+
+  const getServiceIcon = (name: string) => {
+    switch (name) {
+      case "Process Automation Suite":
+        return <Settings className="h-6 w-6 text-primary" />;
+      case "AI Chatbot Integration":
+        return <Bot className="h-6 w-6 text-secondary" />;
+      case "Data Analytics & ML Pipeline":
+        return <Database className="h-6 w-6 text-primary" />;
+      case "Cloud Infrastructure Automation":
+        return <Cloud className="h-6 w-6 text-secondary" />;
+      default:
+        return <Settings className="h-6 w-6 text-primary" />;
+    }
   };
 
   return (
@@ -43,53 +92,21 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Settings className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-xl mb-2">Process Automation Suite</h3>
-                <p className="text-gray-600">
-                  Streamline your operations with our advanced process automation solutions.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <div className="rounded-full bg-secondary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Bot className="h-6 w-6 text-secondary" />
-                </div>
-                <h3 className="font-semibold text-xl mb-2">AI Chatbot Integration</h3>
-                <p className="text-gray-600">
-                  Enhance customer engagement with intelligent conversational AI solutions.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Database className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-xl mb-2">Data Analytics & ML Pipeline</h3>
-                <p className="text-gray-600">
-                  Transform your data into actionable insights with our ML-powered analytics.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <div className="rounded-full bg-secondary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Cloud className="h-6 w-6 text-secondary" />
-                </div>
-                <h3 className="font-semibold text-xl mb-2">Cloud Infrastructure Automation</h3>
-                <p className="text-gray-600">
-                  Scale your infrastructure efficiently with automated cloud solutions.
-                </p>
-              </CardContent>
-            </Card>
+            {services.map((service) => (
+              <Link key={service.id} to={`/services/${service.id}`}>
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                  <CardContent className="pt-6">
+                    <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
+                      {getServiceIcon(service.name)}
+                    </div>
+                    <h3 className="font-semibold text-xl mb-2">{service.name}</h3>
+                    <p className="text-gray-600">
+                      {service.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
