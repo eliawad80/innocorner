@@ -8,12 +8,12 @@ import { Json } from "@/integrations/supabase/types";
 interface Service {
   id: number;
   name: string;
-  description: string | null;
-  detailed_description: string | null;
+  description: string;
+  detailed_description: string;
+  price: number;
   image: string;
   features: string[];
   benefits: string[];
-  price: number;
   created_at: string;
 }
 
@@ -27,7 +27,7 @@ const ServicePage = () => {
       const { data, error } = await supabase
         .from("services")
         .select("*")
-        .eq("id", parseInt(id || "0"))
+        .eq("id", parseInt(id as string))
         .single();
 
       if (error) {
@@ -39,11 +39,15 @@ const ServicePage = () => {
         return;
       }
 
-      // Convert JSON fields to string arrays and ensure they're not null
+      // Convert JSON fields to string arrays and handle null values
       const processedData: Service = {
         ...data,
-        features: (data.features as Json[] || []).map(item => String(item)),
-        benefits: (data.benefits as Json[] || []).map(item => String(item))
+        features: Array.isArray(data.features) 
+          ? (data.features as Json[]).map(item => String(item))
+          : [],
+        benefits: Array.isArray(data.benefits)
+          ? (data.benefits as Json[]).map(item => String(item))
+          : []
       };
 
       setService(processedData);
@@ -53,67 +57,49 @@ const ServicePage = () => {
   }, [id, toast]);
 
   if (!service) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">Loading...</div>
-      </div>
-    );
+    return <div className="container mx-auto px-4 py-8">Loading...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8 text-center">{service.name}</h1>
-        
-        {/* Hero Section */}
-        <div className="mb-12">
-          <img
-            src={service.image}
-            alt={service.name}
-            className="w-full h-[400px] object-cover rounded-lg shadow-lg mb-6"
-          />
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto text-center">
-            {service.description}
-          </p>
-        </div>
-
-        {/* Detailed Description */}
-        <Card className="mb-12">
-          <CardContent className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Overview</h2>
-            <p className="text-gray-700 whitespace-pre-line">
-              {service.detailed_description}
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Features and Benefits Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* Features */}
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
-              <ul className="list-disc pl-6 space-y-2">
-                {service.features?.map((feature, index) => (
-                  <li key={index} className="text-gray-700">{feature}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* Benefits */}
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-semibold mb-4">Benefits</h2>
-              <ul className="list-disc pl-6 space-y-2">
-                {service.benefits?.map((benefit, index) => (
-                  <li key={index} className="text-gray-700">{benefit}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+    <div className="container mx-auto px-4 py-8">
+      <Card className="w-full">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <img
+                src={service.image}
+                alt={service.name}
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold mb-4">{service.name}</h1>
+              <p className="text-xl mb-4">${service.price}</p>
+              <p className="mb-6">{service.description}</p>
+              <div className="mb-6">
+                <h2 className="text-2xl font-semibold mb-3">Detailed Description</h2>
+                <p>{service.detailed_description}</p>
+              </div>
+              <div className="mb-6">
+                <h2 className="text-2xl font-semibold mb-3">Features</h2>
+                <ul className="list-disc pl-6">
+                  {service.features.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h2 className="text-2xl font-semibold mb-3">Benefits</h2>
+                <ul className="list-disc pl-6">
+                  {service.benefits.map((benefit, index) => (
+                    <li key={index}>{benefit}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
