@@ -90,7 +90,7 @@ const Home = () => {
       {/* Services Section */}
       <section id="services" className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Services</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-secondary">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service) => (
               <Link key={service.id} to={`/services/${service.id}`}>
