@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { Json } from "@/integrations/supabase/types";
 
 interface Service {
   id: number;
@@ -38,11 +39,11 @@ const ServicePage = () => {
         return;
       }
 
-      // Convert JSON fields to arrays
+      // Convert JSON fields to string arrays and ensure they're not null
       const processedData: Service = {
         ...data,
-        features: Array.isArray(data.features) ? data.features : [],
-        benefits: Array.isArray(data.benefits) ? data.benefits : []
+        features: (data.features as Json[] || []).map(item => String(item)),
+        benefits: (data.benefits as Json[] || []).map(item => String(item))
       };
 
       setService(processedData);
