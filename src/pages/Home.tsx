@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Settings, Users, Zap, BarChart } from "lucide-react";
+import { ArrowRight, Settings, Users, Zap, BarChart, Bot, Cloud, Database } from "lucide-react";
 
 const Home = () => {
   return (
@@ -41,9 +41,9 @@ const Home = () => {
                 <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
                   <Settings className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-xl mb-2">IT Task Automation</h3>
+                <h3 className="font-semibold text-xl mb-2">Process Automation Suite</h3>
                 <p className="text-gray-600">
-                  Streamline your operations with cutting-edge automation solutions.
+                  Streamline your operations with our advanced process automation solutions.
                 </p>
               </CardContent>
             </Card>
@@ -51,11 +51,11 @@ const Home = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardContent className="pt-6">
                 <div className="rounded-full bg-secondary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Zap className="h-6 w-6 text-secondary" />
+                  <Bot className="h-6 w-6 text-secondary" />
                 </div>
-                <h3 className="font-semibold text-xl mb-2">Workflow Optimization</h3>
+                <h3 className="font-semibold text-xl mb-2">AI Chatbot Integration</h3>
                 <p className="text-gray-600">
-                  Enhance efficiency through optimized business processes.
+                  Enhance customer engagement with intelligent conversational AI solutions.
                 </p>
               </CardContent>
             </Card>
@@ -63,11 +63,11 @@ const Home = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardContent className="pt-6">
                 <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <Users className="h-6 w-6 text-primary" />
+                  <Database className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-xl mb-2">Strategic Consulting</h3>
+                <h3 className="font-semibold text-xl mb-2">Data Analytics & ML Pipeline</h3>
                 <p className="text-gray-600">
-                  Expert guidance for aligning technology with business objectives.
+                  Transform your data into actionable insights with our ML-powered analytics.
                 </p>
               </CardContent>
             </Card>
@@ -75,11 +75,11 @@ const Home = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardContent className="pt-6">
                 <div className="rounded-full bg-secondary/10 w-12 h-12 flex items-center justify-center mb-4">
-                  <BarChart className="h-6 w-6 text-secondary" />
+                  <Cloud className="h-6 w-6 text-secondary" />
                 </div>
-                <h3 className="font-semibold text-xl mb-2">Performance Analytics</h3>
+                <h3 className="font-semibold text-xl mb-2">Cloud Infrastructure Automation</h3>
                 <p className="text-gray-600">
-                  Data-driven insights to optimize your business performance.
+                  Scale your infrastructure efficiently with automated cloud solutions.
                 </p>
               </CardContent>
             </Card>
