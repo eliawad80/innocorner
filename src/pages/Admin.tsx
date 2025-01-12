@@ -3,9 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { ProductTable } from "@/components/admin/ProductTable";
+import { PageContentManager } from "@/components/admin/PageContentManager";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import type { Product } from "@/types/product";
 
@@ -140,17 +147,30 @@ const Admin = () => {
         </form>
       )}
 
-      <ProductForm
-        editingProduct={editingProduct}
-        setEditingProduct={setEditingProduct}
-        onSuccess={fetchProducts}
-      />
+      <Tabs defaultValue="products">
+        <TabsList>
+          <TabsTrigger value="products">Products</TabsTrigger>
+          <TabsTrigger value="pages">Page Content</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="products">
+          <ProductForm
+            editingProduct={editingProduct}
+            setEditingProduct={setEditingProduct}
+            onSuccess={fetchProducts}
+          />
 
-      <ProductTable
-        products={products}
-        onEdit={setEditingProduct}
-        onDelete={fetchProducts}
-      />
+          <ProductTable
+            products={products}
+            onEdit={setEditingProduct}
+            onDelete={fetchProducts}
+          />
+        </TabsContent>
+
+        <TabsContent value="pages">
+          <PageContentManager />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
