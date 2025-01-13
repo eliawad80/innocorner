@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UserCheck, UserX } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type User = {
   id: string;
@@ -19,7 +20,7 @@ type User = {
   created_at: string;
 };
 
-export const UserManagement = () => {
+export function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
@@ -74,7 +75,7 @@ export const UserManagement = () => {
         description: `User admin status updated successfully`,
       });
 
-      fetchUsers(); // Refresh the users list
+      fetchUsers();
     } catch (error) {
       console.error('Error updating user:', error);
       toast({
@@ -94,40 +95,44 @@ export const UserManagement = () => {
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold">User Management</h2>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Email</TableHead>
-            <TableHead>Created At</TableHead>
-            <TableHead>Admin Status</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.created_at}</TableCell>
-              <TableCell>{user.is_admin ? 'Admin' : 'User'}</TableCell>
-              <TableCell>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => toggleAdminStatus(user.id, user.is_admin)}
-                >
-                  {user.is_admin ? (
-                    <UserX className="h-4 w-4 text-red-500" />
-                  ) : (
-                    <UserCheck className="h-4 w-4 text-green-500" />
-                  )}
-                </Button>
-              </TableCell>
+    <Card>
+      <CardHeader>
+        <CardTitle>User Management</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Email</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Admin Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.created_at}</TableCell>
+                <TableCell>{user.is_admin ? 'Admin' : 'User'}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleAdminStatus(user.id, user.is_admin)}
+                  >
+                    {user.is_admin ? (
+                      <UserX className="h-4 w-4 text-red-500" />
+                    ) : (
+                      <UserCheck className="h-4 w-4 text-green-500" />
+                    )}
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
-};
+}

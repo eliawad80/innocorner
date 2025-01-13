@@ -57,7 +57,7 @@ const Admin = () => {
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
       <Tabs defaultValue="products" className="space-y-6">
-        <TabsList>
+        <TabsList className="flex space-x-2">
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="pages">Page Content</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
