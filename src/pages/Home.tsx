@@ -27,9 +27,33 @@ interface HomeContent {
   };
 }
 
+const defaultContent: HomeContent = {
+  hero: {
+    title: "Welcome to Our Platform",
+    subtitle: "Discover innovative solutions for your business needs"
+  },
+  whyChooseUs: {
+    title: "Why Choose Us",
+    items: [
+      {
+        title: "Quality Service",
+        description: "We deliver exceptional quality in everything we do"
+      },
+      {
+        title: "Expert Team",
+        description: "Our experienced team is here to support you"
+      },
+      {
+        title: "Customer Focus",
+        description: "Your success is our priority"
+      }
+    ]
+  }
+};
+
 const Home = () => {
   const [services, setServices] = useState<Service[]>([]);
-  const [content, setContent] = useState<HomeContent | null>(null);
+  const [content, setContent] = useState<HomeContent>(defaultContent);
   const { toast } = useToast();
 
   const scrollToServices = () => {
@@ -42,7 +66,7 @@ const Home = () => {
         .from("page_content")
         .select("content")
         .eq("page_name", "home")
-        .single();
+        .maybeSingle();
 
       if (error) {
         toast({
@@ -53,26 +77,26 @@ const Home = () => {
         return;
       }
 
-      // Type guard to verify the shape of the data
-      const isHomeContent = (data: any): data is { content: HomeContent } => {
-        return (
-          data?.content?.hero?.title !== undefined &&
-          data?.content?.hero?.subtitle !== undefined &&
-          data?.content?.whyChooseUs?.title !== undefined &&
-          Array.isArray(data?.content?.whyChooseUs?.items)
-        );
-      };
+      if (data?.content) {
+        // Type guard to verify the shape of the data
+        const isHomeContent = (content: any): content is HomeContent => {
+          return (
+            content?.hero?.title !== undefined &&
+            content?.hero?.subtitle !== undefined &&
+            content?.whyChooseUs?.title !== undefined &&
+            Array.isArray(content?.whyChooseUs?.items)
+          );
+        };
 
-      if (!isHomeContent(data)) {
-        toast({
-          title: "Error",
-          description: "Invalid page content format",
-          variant: "destructive",
-        });
-        return;
+        if (isHomeContent(data.content)) {
+          setContent(data.content);
+        } else {
+          toast({
+            title: "Warning",
+            description: "Invalid page content format, using default content",
+          });
+        }
       }
-
-      setContent(data.content);
     };
 
     const fetchServices = async () => {
@@ -89,7 +113,7 @@ const Home = () => {
         return;
       }
 
-      setServices(data);
+      setServices(data || []);
     };
 
     fetchContent();
