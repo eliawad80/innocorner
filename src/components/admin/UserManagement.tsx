@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/table";
 import { UserCheck, UserX } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User as AuthUser } from '@supabase/supabase-js';
 
 type User = {
   id: string;
@@ -28,7 +27,6 @@ export function UserManagement() {
 
   const fetchUsers = async () => {
     try {
-      // First, get all profiles
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('*')
@@ -36,21 +34,16 @@ export function UserManagement() {
 
       if (profilesError) throw profilesError;
 
-      // Then, get the corresponding users from auth.users
-      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+      // Get the current session to get the current user's email
+      const { data: { session } } = await supabase.auth.getSession();
       
-      if (authError) throw authError;
-
-      // Combine the data
-      const formattedUsers = profiles.map((profile) => {
-        const authUser = (authUsers?.users as AuthUser[]).find(user => user.id === profile.id);
-        return {
-          id: profile.id,
-          email: authUser?.email || null,
-          is_admin: profile.is_admin || false,
-          created_at: new Date(profile.created_at).toLocaleDateString(),
-        };
-      });
+      const formattedUsers = profiles.map((profile) => ({
+        id: profile.id,
+        // Only show email for the current user for privacy
+        email: session?.user?.id === profile.id ? session.user.email : null,
+        is_admin: profile.is_admin || false,
+        created_at: new Date(profile.created_at).toLocaleDateString(),
+      }));
 
       setUsers(formattedUsers);
     } catch (error) {
@@ -107,6 +100,7 @@ export function UserManagement() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>User ID</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Admin Status</TableHead>
@@ -116,7 +110,8 @@ export function UserManagement() {
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.id}</TableCell>
+                <TableCell>{user.email || 'Hidden'}</TableCell>
                 <TableCell>{user.created_at}</TableCell>
                 <TableCell>{user.is_admin ? 'Admin' : 'User'}</TableCell>
                 <TableCell>
