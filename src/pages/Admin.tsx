@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { ProductTable } from "@/components/admin/ProductTable";
 import { PageContentManager } from "@/components/admin/PageContentManager";
+import { UserManagement } from "@/components/admin/UserManagement";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -151,6 +152,7 @@ const Admin = () => {
         <TabsList>
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="pages">Page Content</TabsTrigger>
+          <TabsTrigger value="users">Users</TabsTrigger>
         </TabsList>
         
         <TabsContent value="products">
@@ -169,6 +171,10 @@ const Admin = () => {
 
         <TabsContent value="pages">
           <PageContentManager />
+        </TabsContent>
+
+        <TabsContent value="users">
+          <UserManagement />
         </TabsContent>
       </Tabs>
     </div>
