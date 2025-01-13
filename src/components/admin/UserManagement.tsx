@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { UserCheck, UserX } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { User as AuthUser } from '@supabase/supabase-js';
 
 type User = {
   id: string;
@@ -42,7 +43,7 @@ export function UserManagement() {
 
       // Combine the data
       const formattedUsers = profiles.map((profile) => {
-        const authUser = authUsers.users.find(user => user.id === profile.id);
+        const authUser = (authUsers?.users as AuthUser[]).find(user => user.id === profile.id);
         return {
           id: profile.id,
           email: authUser?.email || null,
