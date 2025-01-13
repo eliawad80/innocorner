@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type User = {
   id: string;
-  email: string;
+  email: string | null;
   is_admin: boolean;
   created_at: string;
 };
@@ -27,26 +27,29 @@ export function UserManagement() {
 
   const fetchUsers = async () => {
     try {
-      const { data, error } = await supabase
+      // First, get all profiles
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select(`
-          id,
-          is_admin,
-          created_at,
-          auth_users:id (
-            email
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (profilesError) throw profilesError;
 
-      const formattedUsers = data.map((user: any) => ({
-        id: user.id,
-        email: user.auth_users?.email,
-        is_admin: user.is_admin,
-        created_at: new Date(user.created_at).toLocaleDateString(),
-      }));
+      // Then, get the corresponding users from auth.users
+      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+      
+      if (authError) throw authError;
+
+      // Combine the data
+      const formattedUsers = profiles.map((profile) => {
+        const authUser = authUsers.users.find(user => user.id === profile.id);
+        return {
+          id: profile.id,
+          email: authUser?.email || null,
+          is_admin: profile.is_admin || false,
+          created_at: new Date(profile.created_at).toLocaleDateString(),
+        };
+      });
 
       setUsers(formattedUsers);
     } catch (error) {
