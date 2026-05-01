@@ -8,6 +8,10 @@ const chatForm = document.querySelector(".chatbot-form");
 const chatInput = chatForm?.querySelector("input");
 const chatSuggestions = document.querySelector(".chatbot-suggestions");
 const newsletterForms = document.querySelectorAll(".newsletter-form");
+const contactForms = document.querySelectorAll(".contact-mail-form");
+const cookieBanner = document.querySelector(".cookie-banner");
+const cookieAccept = document.querySelector(".cookie-accept");
+const cookieSettings = document.querySelectorAll(".cookie-settings");
 const chatEndpoint = window.INNOCORNER_CHAT_ENDPOINT || "";
 const freeChatEndpoint = "https://text.pollinations.ai/openai";
 const siteContext =
@@ -185,4 +189,55 @@ newsletterForms.forEach((form) => {
     window.location.href = `mailto:info@innocorner.com?subject=${subject}&body=${body}`;
     form.reset();
   });
+});
+
+contactForms.forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = form.querySelector('input[name="name"]')?.value.trim() || "";
+    const email = form.querySelector('input[name="email"]')?.value.trim() || "";
+    const message = form.querySelector('textarea[name="message"]')?.value.trim() || "";
+    const note = form.querySelector(".form-note");
+
+    if (!name || !email || !message) return;
+
+    const subject = encodeURIComponent(`Website enquiry from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    window.location.href = `mailto:info@innocorner.com?subject=${subject}&body=${body}`;
+
+    if (note) {
+      note.textContent = "Your email app is opening with the message ready to send.";
+    }
+
+    form.reset();
+  });
+});
+
+const showCookieBanner = () => {
+  cookieBanner?.removeAttribute("hidden");
+};
+
+const hideCookieBanner = () => {
+  cookieBanner?.setAttribute("hidden", "");
+};
+
+try {
+  if (localStorage.getItem("innocornerPrivacyNotice") !== "accepted") {
+    showCookieBanner();
+  }
+} catch {
+  showCookieBanner();
+}
+
+cookieAccept?.addEventListener("click", () => {
+  try {
+    localStorage.setItem("innocornerPrivacyNotice", "accepted");
+  } catch {
+    // If storage is blocked, the visitor can still continue using the site.
+  }
+  hideCookieBanner();
+});
+
+cookieSettings.forEach((button) => {
+  button.addEventListener("click", showCookieBanner);
 });
