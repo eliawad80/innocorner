@@ -70,5 +70,5 @@ const tools = result?.tools || [];
 
 console.log(`Brevo MCP tools found: ${tools.length}`);
 for (const tool of tools) {
-  console.log(`- ${tool.name}: ${tool.description || "No description"}`);
+  console.log(tool.name);
 }
