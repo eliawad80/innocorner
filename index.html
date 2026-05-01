@@ -231,6 +231,42 @@
       </section>
     </main>
 
+    <section class="chatbot" aria-label="InnoCorner AI assistant">
+      <button class="chatbot-toggle" type="button" aria-label="Open InnoCorner AI assistant" aria-expanded="false">
+        <span class="chatbot-dot"></span>
+        AI
+      </button>
+      <div class="chatbot-panel" role="dialog" aria-label="InnoCorner AI assistant" aria-hidden="true">
+        <div class="chatbot-header">
+          <div>
+            <span>InnoCorner AI Guide</span>
+            <p>Ask about AI automation, RAG, training, security, or future-readiness.</p>
+          </div>
+          <button class="chatbot-close" type="button" aria-label="Close AI assistant">x</button>
+        </div>
+        <div class="chatbot-messages" aria-live="polite">
+          <div class="chat-message bot">
+            Hi, I am the InnoCorner AI Guide. I can help you choose a training course, plan an AI automation workflow,
+            or start a consultancy conversation.
+          </div>
+        </div>
+        <div class="chatbot-suggestions" aria-label="Suggested questions">
+          <button type="button">What AI services do you offer?</button>
+          <button type="button">Tell me about AI RAG training</button>
+          <button type="button">How can we prepare for 10 years?</button>
+        </div>
+        <form class="chatbot-form">
+          <input
+            name="message"
+            autocomplete="off"
+            placeholder="Ask the AI Guide..."
+            aria-label="Ask the InnoCorner AI Guide"
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </section>
+
     <footer class="site-footer">
       <img src="/public/images/innocorner-logo.png" alt="InnoCorner Logo" />
       <p>Secure, efficient, scalable technology solutions from Brussels.</p>
