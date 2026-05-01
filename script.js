@@ -7,6 +7,7 @@ const chatMessages = document.querySelector(".chatbot-messages");
 const chatForm = document.querySelector(".chatbot-form");
 const chatInput = chatForm?.querySelector("input");
 const chatSuggestions = document.querySelector(".chatbot-suggestions");
+const newsletterForms = document.querySelectorAll(".newsletter-form");
 const chatEndpoint = window.INNOCORNER_CHAT_ENDPOINT || "";
 const freeChatEndpoint = "https://text.pollinations.ai/openai";
 const siteContext =
@@ -164,4 +165,24 @@ chatForm?.addEventListener("submit", (event) => {
   if (!question) return;
   chatInput.value = "";
   sendChat(question);
+});
+
+newsletterForms.forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const input = form.querySelector('input[type="email"]');
+    const note = form.querySelector(".form-note");
+    const email = input?.value.trim();
+
+    if (!email) return;
+
+    if (note) {
+      note.textContent = "Thank you. Your subscription request is ready to send to InnoCorner.";
+    }
+
+    const subject = encodeURIComponent("Newsletter subscription");
+    const body = encodeURIComponent(`Please add ${email} to the InnoCorner newsletter list.`);
+    window.location.href = `mailto:info@innocorner.com?subject=${subject}&body=${body}`;
+    form.reset();
+  });
 });
