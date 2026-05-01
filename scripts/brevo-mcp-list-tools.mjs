@@ -5,7 +5,7 @@ if (!token) {
   process.exit(1);
 }
 
-const endpoint = "https://mcp.brevo.com/v1/brevo/mcp";
+const endpoint = process.env.BREVO_MCP_ENDPOINT || "https://mcp.brevo.com/v1/brevo/mcp";
 
 const callMcp = async (payload, sessionId) => {
   const headers = {

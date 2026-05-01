@@ -2,6 +2,11 @@ name: List Brevo MCP Tools
 
 on:
   workflow_dispatch:
+    inputs:
+      endpoint:
+        description: Brevo MCP endpoint
+        required: false
+        default: https://mcp.brevo.com/v1/brevo/mcp
 
 permissions:
   contents: read
@@ -17,4 +22,5 @@ jobs:
         env:
           BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_MCP_ENDPOINT: ${{ github.event.inputs.endpoint || 'https://mcp.brevo.com/v1/brevo/mcp' }}
         run: node scripts/brevo-mcp-list-tools.mjs
