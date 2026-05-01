@@ -14,7 +14,7 @@ Independent rebuild of the InnoCorner marketing website, replacing the Lovable-g
 ## Newsletter automation
 
 See `docs/newsletter-automation.md` for the recommended email-to-newsletter workflow.
-See `docs/newsletter-sending-setup.md` for OVH MX Plan, `noreply@innocorner.com`, and sender authentication setup.
+See `docs/newsletter-sending-setup.md` for OVH MX Plan, `newsletter@innocorner.com`, and sender authentication setup.
 
 ## Local preview
 

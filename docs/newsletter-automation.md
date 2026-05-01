@@ -9,7 +9,7 @@ This is the recommended workflow for turning articles received by email into a r
 3. Save each approved source email into Supabase with title, link, sender, date, topic, and original excerpt.
 4. Summarize each article into key points, business impact, risk, and suggested action.
 5. Rewrite the weekly digest in InnoCorner's voice with attribution to the original sources.
-6. Send the draft to `elias.awad80@gmail.com` for approval.
+6. Send the draft to `elias.awad.work@gmail.com` for approval.
 7. After approval, publish the newsletter to subscribers and create/update an article on `insights.html`.
 
 ## Publishing model
@@ -26,7 +26,7 @@ website.
 
 ## Email sending identity
 
-Use a domain mailbox such as `noreply@innocorner.com` for sending newsletters, with replies directed to
+Use a domain mailbox such as `newsletter@innocorner.com` for sending newsletters, with replies directed to
 `info@innocorner.com`. Before sending bulk email, configure SPF, DKIM, and DMARC for `innocorner.com` in your domain DNS
 through the newsletter provider.
 
@@ -38,7 +38,7 @@ Keep a human approval step before publishing. Automated summaries can miss nuanc
 
 ## Approval workflow
 
-Weekly draft approvals go to `elias.awad80@gmail.com`.
+Weekly draft approvals go to `elias.awad.work@gmail.com`.
 
 Use a unique approval code in the subject:
 
@@ -58,7 +58,7 @@ newsletter stays in draft mode.
 After approval:
 
 1. Publish the approved edition to the public Insights archive.
-2. Send the approved edition to subscribers from `noreply@innocorner.com`.
+2. Send the approved edition to subscribers from `newsletter@innocorner.com`.
 3. Keep a record of the approval email, sent date, subject, source email IDs, and published edition title.
 
 ## Possible tools
@@ -83,5 +83,5 @@ Start with a weekly workflow:
 
 - Collect all emails tagged `newsletter`.
 - Generate one draft digest every Friday.
-- Email the draft to `elias.awad80@gmail.com`.
+- Email the draft to `elias.awad.work@gmail.com`.
 - Publish only after manual approval.

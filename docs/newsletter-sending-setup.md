@@ -5,15 +5,16 @@ mailbox for configuration and ownership checks.
 
 ## Recommended addresses
 
-- Public sender: `noreply@innocorner.com`
+- Public sender: `newsletter@innocorner.com`
 - Reply-to: `info@innocorner.com`
 - Domain/admin mailbox: `postmaster@innocorner.com`
-- Approval mailbox: `elias.awad80@gmail.com`
+- Brevo account owner: `elias.awad.work@gmail.com`
+- Approval mailbox: `elias.awad.work@gmail.com`
 - Source article label in Gmail: `InnoCorner/Newsletter Sources`
 - Approval reply label in Gmail: `InnoCorner/Newsletter Approvals`
 
 Do not use `postmaster@innocorner.com` as the public newsletter sender. It is better reserved for domain administration,
-verification emails, and deliverability notices.
+verification emails, and deliverability notices. `newsletter@innocorner.com` is the public newsletter identity.
 
 ## OVH MX Plan
 
@@ -22,7 +23,7 @@ In OVHcloud:
 1. Open `Web Cloud`.
 2. Open `MX Plan`.
 3. Select `innocorner.com`.
-4. Create `noreply@innocorner.com` as either:
+4. Create `newsletter@innocorner.com` as either:
    - a real mailbox if you want to receive bounce or provider verification mail directly, or
    - an alias/redirect to `postmaster@innocorner.com` if the sending platform only needs sender verification.
 5. Confirm that `postmaster@innocorner.com` can receive mail.
@@ -42,14 +43,14 @@ Recommended first choice: Brevo.
 
 In Brevo:
 
-1. Create the Brevo account using `elias.awad80@gmail.com`.
+1. Use the Brevo account owned by `elias.awad.work@gmail.com`.
 2. Do not share the Brevo password with Codex.
-3. Add sender `InnoCorner <noreply@innocorner.com>`.
-4. Set reply-to to `info@innocorner.com`.
-5. Add and authenticate the domain `innocorner.com`.
-6. Use manual DNS authentication if you want full control in OVH.
-7. Copy Brevo's generated DNS records into the OVH DNS zone.
-8. Store the Brevo API key only as a deployment secret, not inside the repository.
+3. Confirm `innocorner.com` is verified in Brevo.
+4. Confirm sender `InnoCorner <newsletter@innocorner.com>` is verified in Brevo.
+5. Set reply-to to `info@innocorner.com`.
+6. Keep Brevo's domain authentication DNS records active in OVH.
+7. Store the Brevo API key and Brevo MCP API key only as deployment secrets, not inside the repository.
+8. Never paste API keys into source files, public docs, commits, frontend JavaScript, or GitHub issues.
 
 Brevo may ask for:
 
@@ -84,10 +85,10 @@ After successful sending history, the policy can later move to `quarantine`, the
 2. Codex or automation labels those source emails as `InnoCorner/Newsletter Sources`.
 3. Once per week, Codex reads only labeled source emails that were not used in a previous edition.
 4. Codex groups by topic, removes duplicates, and prepares a newsletter draft.
-5. Codex emails the draft approval request to `elias.awad80@gmail.com`.
+5. Codex emails the draft approval request to `elias.awad.work@gmail.com`.
 6. User replies with the exact approval phrase, for example `APPROVED 2026-05-08`.
 7. Approved draft is published to the Insights archive.
-8. Approved draft is sent to subscribers through Brevo from `noreply@innocorner.com`.
+8. Approved draft is sent to subscribers through Brevo from `newsletter@innocorner.com`.
 
 Do not auto-send or auto-publish without approval.
 
@@ -96,7 +97,7 @@ Do not auto-send or auto-publish without approval.
 Before using real subscribers:
 
 1. Create a test audience with only internal addresses.
-2. Send one test newsletter from `noreply@innocorner.com`.
+2. Send one test newsletter from `newsletter@innocorner.com`.
 3. Confirm delivery to Gmail, Outlook, and OVH mailboxes.
 4. Check that reply-to goes to `info@innocorner.com`.
 5. Confirm unsubscribe footer is present.
