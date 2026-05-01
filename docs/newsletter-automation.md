@@ -30,6 +30,8 @@ Use a domain mailbox such as `noreply@innocorner.com` for sending newsletters, w
 `info@innocorner.com`. Before sending bulk email, configure SPF, DKIM, and DMARC for `innocorner.com` in your domain DNS
 through the newsletter provider.
 
+See `docs/newsletter-sending-setup.md` for the OVH MX Plan and sender authentication runbook.
+
 ## Important rule
 
 Keep a human approval step before publishing. Automated summaries can miss nuance, source restrictions, or legal context.
