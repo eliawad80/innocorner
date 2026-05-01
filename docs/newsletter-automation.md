@@ -12,6 +12,24 @@ This is the recommended workflow for turning articles received by email into a r
 6. Send the draft to the team for approval.
 7. After approval, publish the newsletter to subscribers and create/update an article on `insights.html`.
 
+## Publishing model
+
+The public Insights page should show only the finished newsletter archive:
+
+- newsletter title
+- sent date
+- short topic label
+- expandable or linked newsletter details
+
+The collection, summarization, rewriting, and approval mechanism is internal and should not be described on the public
+website.
+
+## Email sending identity
+
+Use a domain mailbox such as `noreply@innocorner.com` for sending newsletters, with replies directed to
+`info@innocorner.com`. Before sending bulk email, configure SPF, DKIM, and DMARC for `innocorner.com` in your domain DNS
+through the newsletter provider.
+
 ## Important rule
 
 Keep a human approval step before publishing. Automated summaries can miss nuance, source restrictions, or legal context.
