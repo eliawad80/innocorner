@@ -9,7 +9,7 @@ mailbox for configuration and ownership checks.
 - Reply-to: `info@innocorner.com`
 - Domain/admin mailbox: `postmaster@innocorner.com`
 - Brevo account owner: `elias.awad.work@gmail.com`
-- Approval mailbox: `elias.awad.work@gmail.com`
+- Approval mailbox: `info@innocorner.com`
 - Source article label in Gmail: `InnoCorner/Newsletter Sources`
 - Approval reply label in Gmail: `InnoCorner/Newsletter Approvals`
 
@@ -52,6 +52,24 @@ In Brevo:
 7. Store the Brevo API key and Brevo MCP API key only as deployment secrets, not inside the repository.
 8. Never paste API keys into source files, public docs, commits, frontend JavaScript, or GitHub issues.
 
+## Saving secrets
+
+Save secrets to GitHub Actions from the local machine:
+
+```powershell
+.\scripts\set-newsletter-secrets.ps1
+```
+
+This stores:
+
+- `BREVO_API_KEY`
+- `BREVO_MCP_API_KEY` if provided
+
+The public website must never receive these keys. Newsletter sending must happen from a server-side workflow, scheduled
+job, or approved automation.
+
+After saving `BREVO_API_KEY`, run the GitHub Actions workflow named `Test Brevo API` to verify the key.
+
 Brevo may ask for:
 
 - a verification TXT record
@@ -85,7 +103,7 @@ After successful sending history, the policy can later move to `quarantine`, the
 2. Codex or automation labels those source emails as `InnoCorner/Newsletter Sources`.
 3. Once per week, Codex reads only labeled source emails that were not used in a previous edition.
 4. Codex groups by topic, removes duplicates, and prepares a newsletter draft.
-5. Codex emails the draft approval request to `elias.awad.work@gmail.com`.
+5. Codex emails the draft approval request to `info@innocorner.com`.
 6. User replies with the exact approval phrase, for example `APPROVED 2026-05-08`.
 7. Approved draft is published to the Insights archive.
 8. Approved draft is sent to subscribers through Brevo from `newsletter@innocorner.com`.

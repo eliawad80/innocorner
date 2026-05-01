@@ -9,7 +9,7 @@ This is the recommended workflow for turning articles received by email into a r
 3. Save each approved source email into Supabase with title, link, sender, date, topic, and original excerpt.
 4. Summarize each article into key points, business impact, risk, and suggested action.
 5. Rewrite the weekly digest in InnoCorner's voice with attribution to the original sources.
-6. Send the draft to `elias.awad.work@gmail.com` for approval.
+6. Send the draft to `info@innocorner.com` for approval.
 7. After approval, publish the newsletter to subscribers and create/update an article on `insights.html`.
 
 ## Publishing model
@@ -38,7 +38,7 @@ Keep a human approval step before publishing. Automated summaries can miss nuanc
 
 ## Approval workflow
 
-Weekly draft approvals go to `elias.awad.work@gmail.com`.
+Weekly draft approvals go to `info@innocorner.com`.
 
 Use a unique approval code in the subject:
 
@@ -83,5 +83,5 @@ Start with a weekly workflow:
 
 - Collect all emails tagged `newsletter`.
 - Generate one draft digest every Friday.
-- Email the draft to `elias.awad.work@gmail.com`.
+- Email the draft to `info@innocorner.com`.
 - Publish only after manual approval.
