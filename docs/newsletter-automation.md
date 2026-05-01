@@ -9,7 +9,7 @@ This is the recommended workflow for turning articles received by email into a r
 3. Save each approved source email into Supabase with title, link, sender, date, topic, and original excerpt.
 4. Summarize each article into key points, business impact, risk, and suggested action.
 5. Rewrite the weekly digest in InnoCorner's voice with attribution to the original sources.
-6. Send the draft to the team for approval.
+6. Send the draft to `elias.awad80@gmail.com` for approval.
 7. After approval, publish the newsletter to subscribers and create/update an article on `insights.html`.
 
 ## Publishing model
@@ -36,6 +36,31 @@ See `docs/newsletter-sending-setup.md` for the OVH MX Plan and sender authentica
 
 Keep a human approval step before publishing. Automated summaries can miss nuance, source restrictions, or legal context.
 
+## Approval workflow
+
+Weekly draft approvals go to `elias.awad80@gmail.com`.
+
+Use a unique approval code in the subject:
+
+```txt
+Newsletter Draft Approval - YYYY-MM-DD
+```
+
+The approval reply must contain the exact approval phrase:
+
+```txt
+APPROVED YYYY-MM-DD
+```
+
+If the reply contains edits, questions, partial approval, or any other text without the exact approval phrase, the
+newsletter stays in draft mode.
+
+After approval:
+
+1. Publish the approved edition to the public Insights archive.
+2. Send the approved edition to subscribers from `noreply@innocorner.com`.
+3. Keep a record of the approval email, sent date, subject, source email IDs, and published edition title.
+
 ## Possible tools
 
 - Gmail or Outlook mailbox for collection.
@@ -58,5 +83,5 @@ Start with a weekly workflow:
 
 - Collect all emails tagged `newsletter`.
 - Generate one draft digest every Friday.
-- Email the draft to `info@innocorner.com`.
+- Email the draft to `elias.awad80@gmail.com`.
 - Publish only after manual approval.

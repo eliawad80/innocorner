@@ -8,7 +8,9 @@ mailbox for configuration and ownership checks.
 - Public sender: `noreply@innocorner.com`
 - Reply-to: `info@innocorner.com`
 - Domain/admin mailbox: `postmaster@innocorner.com`
+- Approval mailbox: `elias.awad80@gmail.com`
 - Source article label in Gmail: `InnoCorner/Newsletter Sources`
+- Approval reply label in Gmail: `InnoCorner/Newsletter Approvals`
 
 Do not use `postmaster@innocorner.com` as the public newsletter sender. It is better reserved for domain administration,
 verification emails, and deliverability notices.
@@ -40,11 +42,14 @@ Recommended first choice: Brevo.
 
 In Brevo:
 
-1. Add sender `InnoCorner <noreply@innocorner.com>`.
-2. Set reply-to to `info@innocorner.com`.
-3. Add and authenticate the domain `innocorner.com`.
-4. Use manual DNS authentication if you want full control in OVH.
-5. Copy Brevo's generated DNS records into the OVH DNS zone.
+1. Create the Brevo account using `elias.awad80@gmail.com`.
+2. Do not share the Brevo password with Codex.
+3. Add sender `InnoCorner <noreply@innocorner.com>`.
+4. Set reply-to to `info@innocorner.com`.
+5. Add and authenticate the domain `innocorner.com`.
+6. Use manual DNS authentication if you want full control in OVH.
+7. Copy Brevo's generated DNS records into the OVH DNS zone.
+8. Store the Brevo API key only as a deployment secret, not inside the repository.
 
 Brevo may ask for:
 
@@ -75,12 +80,14 @@ After successful sending history, the policy can later move to `quarantine`, the
 
 ## Automation workflow
 
-1. User labels useful tech emails in Gmail as `InnoCorner/Newsletter Sources`.
-2. Codex reads only labeled source emails.
-3. Codex groups them by topic and prepares a newsletter draft.
-4. User approves the draft.
-5. Approved draft is published to the Insights archive.
-6. Approved draft is sent to subscribers through the email provider.
+1. User forwards useful tech emails with `newsletter` in the subject.
+2. Codex or automation labels those source emails as `InnoCorner/Newsletter Sources`.
+3. Once per week, Codex reads only labeled source emails that were not used in a previous edition.
+4. Codex groups by topic, removes duplicates, and prepares a newsletter draft.
+5. Codex emails the draft approval request to `elias.awad80@gmail.com`.
+6. User replies with the exact approval phrase, for example `APPROVED 2026-05-08`.
+7. Approved draft is published to the Insights archive.
+8. Approved draft is sent to subscribers through Brevo from `noreply@innocorner.com`.
 
 Do not auto-send or auto-publish without approval.
 
