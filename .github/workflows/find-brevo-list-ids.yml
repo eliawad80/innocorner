@@ -1,0 +1,20 @@
+name: Find Brevo List IDs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find Brevo list IDs
+        env:
+          BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: node scripts/brevo-find-list-ids.mjs
