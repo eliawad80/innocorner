@@ -85,3 +85,31 @@ Start with a weekly workflow:
 - Generate one draft digest every Friday.
 - Email the draft to `info@innocorner.com`.
 - Publish only after manual approval.
+
+## Portable execution
+
+The workflow should run outside the laptop. The recommended portable runner is GitHub Actions:
+
+- Weekly collection job: every Friday at 14:00 UTC.
+- Approval checker: every 30 minutes.
+- Secrets stored in GitHub Actions, not in source files.
+- Website publishing happens through commits to the repo after approval.
+
+Current workflow file:
+
+```txt
+.github/workflows/newsletter-automation.yml
+```
+
+Required secrets before full automation can run:
+
+- `BREVO_MCP_API_KEY`
+- `GMAIL_CLIENT_ID`
+- `GMAIL_CLIENT_SECRET`
+- `GMAIL_REFRESH_TOKEN`
+
+Until Gmail OAuth secrets are added, the workflow exits safely without reading emails, sending newsletters, or changing
+the website.
+
+The current ChatGPT/Codex Gmail connector works for interactive work in this conversation, but a scheduled GitHub job
+needs its own Gmail OAuth credentials because it runs independently from the desktop session.

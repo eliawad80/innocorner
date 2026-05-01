@@ -1,0 +1,40 @@
+name: Newsletter Automation
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: collect, check-approval, or full
+        required: true
+        default: check-approval
+        type: choice
+        options:
+          - collect
+          - check-approval
+          - full
+  schedule:
+    - cron: "0 14 * * 5"
+    - cron: "0,30 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: newsletter-automation
+  cancel-in-progress: false
+
+jobs:
+  newsletter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run newsletter automation
+        env:
+          MODE: ${{ github.event.inputs.mode || 'scheduled' }}
+          BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+        run: node scripts/newsletter-automation.mjs
