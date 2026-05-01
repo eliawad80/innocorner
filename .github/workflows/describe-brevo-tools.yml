@@ -1,0 +1,26 @@
+name: Describe Brevo MCP Tools
+
+on:
+  workflow_dispatch:
+    inputs:
+      tool_names:
+        description: Comma-separated tool names
+        required: true
+        default: create_email_campaign,send_test_email
+
+permissions:
+  contents: read
+
+jobs:
+  describe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Describe selected Brevo MCP tools
+        env:
+          BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_TOOL_NAMES: ${{ github.event.inputs.tool_names }}
+        run: node scripts/brevo-mcp-describe-tools.mjs
