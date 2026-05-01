@@ -8,6 +8,8 @@ const chatForm = document.querySelector(".chatbot-form");
 const chatInput = chatForm?.querySelector("input");
 const chatSuggestions = document.querySelector(".chatbot-suggestions");
 const chatEndpoint = window.INNOCORNER_CHAT_ENDPOINT || "";
+const siteContext =
+  "You are the InnoCorner AI Guide on innocorner.com. InnoCorner is a Brussels-based futuristic specialist offering AI automation workflows, RAG for sensitive information, self-hosted n8n, Make automations, Zabbix monitoring, security training, AI RAG training, AI training, AI for Business training, and 10- and 20-year future-readiness consultancy. Be concise, practical, warm, and invite visitors to contact info@innocorner.com when they want a tailored plan.";
 
 menuButton?.addEventListener("click", () => {
   const isOpen = nav.classList.toggle("open");
@@ -91,6 +93,29 @@ const sendChat = async (question) => {
       }
     } catch {
       // Falls back to the local guide when the model endpoint is unavailable.
+    }
+  }
+
+  if (window.puter?.ai?.chat) {
+    try {
+      const reply = await window.puter.ai.chat(
+        [
+          { role: "system", content: siteContext },
+          { role: "user", content: question },
+        ],
+        { model: "gpt-5-nano" },
+      );
+      const text =
+        typeof reply === "string"
+          ? reply
+          : reply?.message?.content || reply?.content || reply?.text || String(reply || "");
+
+      if (text.trim()) {
+        addMessage(text.trim());
+        return;
+      }
+    } catch {
+      // Falls back to the local guide if the free AI provider is unavailable or asks the visitor to sign in.
     }
   }
 
