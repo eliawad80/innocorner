@@ -1,73 +1,30 @@
-# Welcome to your Lovable project
+# InnoCorner Website
 
-## Project info
+Independent rebuild of the InnoCorner marketing website, replacing the Lovable-generated frontend with a clean static site.
 
-**URL**: https://lovable.dev/projects/b6b97af0-305f-4d42-b5a8-238bde219fc1
+## What is included
 
-## How can I edit this code?
+- Responsive homepage with Home, Services, Products, About, and Contact sections
+- Current InnoCorner copy, contact details, and logo
+- Dependency-free HTML, CSS, and JavaScript
+- Supabase Edge Function wrapper for deployment on an active Supabase project
 
-There are several ways of editing your application.
+## Local preview
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/b6b97af0-305f-4d42-b5a8-238bde219fc1) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```powershell
+node scripts/preview-server.mjs
 ```
 
-**Edit a file directly in GitHub**
+Then open `http://localhost:4173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Deployment
 
-**Use GitHub Codespaces**
+This repository includes a GitHub Pages workflow in `.github/workflows/deploy-pages.yml` and a `CNAME` file for `innocorner.com`.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Supabase Edge Function
 
-## What technologies are used for this project?
+The function in `supabase/functions/site/index.ts` serves the same site as a single HTML response. Deploy it to an active Supabase project with:
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/b6b97af0-305f-4d42-b5a8-238bde219fc1) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```powershell
+supabase functions deploy site --project-ref <project-ref>
+```

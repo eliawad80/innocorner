@@ -1,24 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>innocorner-legacy-quest</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-
-    <meta property="og:title" content="innocorner-legacy-quest" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta
+      name="description"
+      content="InnoCorner blends IT operations, SDLC expertise, automation, workflow optimization, and practical products to help people and businesses operate smarter."
+    />
+    <meta name="author" content="InnoCorner" />
+    <meta property="og:title" content="InnoCorner | Practical Innovation for Better Operations" />
+    <meta
+      property="og:description"
+      content="Secure, efficient, and scalable technology solutions for individuals and businesses."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:image" content="/public/images/innocorner-logo.png" />
+    <title>InnoCorner | Practical Innovation for Better Operations</title>
+    <link rel="icon" href="/public/images/innocorner-logo.png" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="InnoCorner home">
+        <img src="/public/images/innocorner-logo.png" alt="InnoCorner Logo" />
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">InnoCorner Brussels</p>
+          <h1>Practical innovation for smarter business operations.</h1>
+          <p>
+            InnoCorner helps individuals and companies transform routines, align technology with business objectives,
+            and deliver secure, efficient, scalable solutions.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#contact">Start a conversation</a>
+            <a class="button secondary" href="#services">Explore services</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="InnoCorner capabilities snapshot">
+          <div class="signal-card">
+            <span>01</span>
+            <strong>IT operations</strong>
+            <p>Workflow discipline, operational clarity, and secure delivery.</p>
+          </div>
+          <div class="signal-card">
+            <span>02</span>
+            <strong>Automation</strong>
+            <p>Task automation and optimization built around real business needs.</p>
+          </div>
+          <div class="signal-card">
+            <span>03</span>
+            <strong>SDLC expertise</strong>
+            <p>From strategy through execution, with scalable systems thinking.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust-band" aria-label="Why choose InnoCorner">
+        <article>
+          <strong>Quality Service</strong>
+          <p>Exceptional quality in everything we do.</p>
+        </article>
+        <article>
+          <strong>Expert Team</strong>
+          <p>Experienced support for technical and operational goals.</p>
+        </article>
+        <article>
+          <strong>Customer Focus</strong>
+          <p>Your success remains the priority from idea to execution.</p>
+        </article>
+      </section>
+
+      <section class="section split" id="services">
+        <div>
+          <p class="eyebrow">Our Services</p>
+          <h2>Technology services shaped around your workflow.</h2>
+          <p>
+            From IT task automation to workflow optimization, our services are crafted to address unique needs and
+            create sustainable success.
+          </p>
+        </div>
+        <div class="service-grid">
+          <article>
+            <h3>IT Task Automation</h3>
+            <p>Reduce repetitive manual work and create cleaner operational routines.</p>
+          </article>
+          <article>
+            <h3>Workflow Optimization</h3>
+            <p>Map, improve, and streamline processes across teams and tools.</p>
+          </article>
+          <article>
+            <h3>Secure Delivery</h3>
+            <p>Bring IT operations and SDLC discipline into practical implementation.</p>
+          </article>
+          <article>
+            <h3>Strategic Execution</h3>
+            <p>Bridge strategy and delivery through collaboration, planning, and measurable progress.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section products" id="products">
+        <div class="section-heading">
+          <p class="eyebrow">Our Products</p>
+          <h2>Products that make daily routines more efficient.</h2>
+          <p>
+            InnoCorner curates products designed to bring meaningful changes to daily routines, empowering individuals
+            and businesses to embrace a smarter, more efficient way of living.
+          </p>
+        </div>
+        <div class="product-strip">
+          <article>
+            <span>Product Thinking</span>
+            <strong>Useful by design</strong>
+            <p>Each product is selected or shaped around practical value, not novelty for its own sake.</p>
+          </article>
+          <article>
+            <span>Daily Improvement</span>
+            <strong>Smarter routines</strong>
+            <p>Tools and solutions that support better habits, better operations, and better outcomes.</p>
+          </article>
+          <article>
+            <span>Business Fit</span>
+            <strong>Scalable choices</strong>
+            <p>Product decisions aligned with how people and organizations actually work.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section about" id="about">
+        <div class="about-card">
+          <p class="eyebrow">About Us</p>
+          <h2>We connect technical expertise with business purpose.</h2>
+          <p>
+            At InnoCorner, we are dedicated to transforming the lives of individuals and companies by blending
+            innovative technology with practical solutions. With a strong foundation in IT operations and the Software
+            Development Life Cycle, we bring a deep understanding of how to align technical expertise with business
+            objectives to deliver secure, efficient, and scalable solutions.
+          </p>
+        </div>
+        <div class="mission">
+          <h3>Our Mission</h3>
+          <p>
+            To inspire change through technology, offering products and services that enhance life routines and reflect
+            our spirit of innovation. Whether through IT task automation, advanced services, or life-changing products,
+            we aim to help people and businesses achieve their goals in harmony with their vision.
+          </p>
+          <p>
+            We believe in bridging the gap between strategy and execution. Our capacity for management and collaboration
+            enables us to guide cross-functional initiatives, optimize workflows, and enhance operational efficiency.
+          </p>
+        </div>
+      </section>
+
+      <section class="section values" aria-label="InnoCorner values">
+        <article>
+          <h3>Innovative Products</h3>
+          <p>Meaningful tools for smarter, more efficient living and working.</p>
+        </article>
+        <article>
+          <h3>Tailored Services</h3>
+          <p>Solutions built around your unique needs and operating reality.</p>
+        </article>
+        <article>
+          <h3>Collaborative Approach</h3>
+          <p>Open communication and alignment from first conversation to delivery.</p>
+        </article>
+        <article>
+          <h3>Commitment to Excellence</h3>
+          <p>Continuous improvement with the latest technology advancements.</p>
+        </article>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="contact-copy">
+          <p class="eyebrow">Contact Us</p>
+          <h2>Let us help you unlock your potential.</h2>
+          <p>
+            Together, we can build a better, more efficient future with innovative solutions that resonate with your
+            ambitions.
+          </p>
+          <div class="contact-list">
+            <a href="mailto:info@innocorner.com">info@innocorner.com</a>
+            <a href="tel:+32026467974">+32 02 646 79 74</a>
+            <span>Avenue du Parc 200, 1060 Brussels</span>
+          </div>
+        </div>
+        <form class="contact-form" action="mailto:info@innocorner.com" method="post" enctype="text/plain">
+          <label>
+            Name
+            <input name="name" autocomplete="name" placeholder="Your name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" autocomplete="email" placeholder="your@email.com" required />
+          </label>
+          <label>
+            Message
+            <textarea name="message" placeholder="How can we help you?" required></textarea>
+          </label>
+          <button class="button primary" type="submit">Send Message</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <img src="/public/images/innocorner-logo.png" alt="InnoCorner Logo" />
+      <p>Secure, efficient, scalable technology solutions from Brussels.</p>
+      <span>(c) 2026 InnoCorner. All rights reserved.</span>
+    </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
