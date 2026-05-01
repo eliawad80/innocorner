@@ -10,6 +10,7 @@ const chatSuggestions = document.querySelector(".chatbot-suggestions");
 const chatEndpoint = window.INNOCORNER_CHAT_ENDPOINT || "";
 const siteContext =
   "You are the InnoCorner AI Guide on innocorner.com. InnoCorner is a Brussels-based futuristic specialist offering AI automation workflows, RAG for sensitive information, self-hosted n8n, Make automations, Zabbix monitoring, security training, AI RAG training, AI training, AI for Business training, and 10- and 20-year future-readiness consultancy. Be concise, practical, warm, and invite visitors to contact info@innocorner.com when they want a tailored plan.";
+const chatHistory = [{ role: "system", content: siteContext }];
 
 menuButton?.addEventListener("click", () => {
   const isOpen = nav.classList.toggle("open");
@@ -44,6 +45,18 @@ const addMessage = (text, type = "bot") => {
   message.textContent = text;
   chatMessages?.append(message);
   chatMessages?.scrollTo({ top: chatMessages.scrollHeight, behavior: "smooth" });
+  return message;
+};
+
+const getPuterText = (reply) => {
+  if (typeof reply === "string") return reply;
+  if (typeof reply?.message?.content === "string") return reply.message.content;
+  if (Array.isArray(reply?.message?.content)) {
+    return reply.message.content.map((part) => part?.text || part?.content || "").join("");
+  }
+  if (typeof reply?.content === "string") return reply.content;
+  if (typeof reply?.text === "string") return reply.text;
+  return "";
 };
 
 const localAnswer = (question) => {
@@ -78,6 +91,7 @@ const localAnswer = (question) => {
 
 const sendChat = async (question) => {
   addMessage(question, "user");
+  chatHistory.push({ role: "user", content: question });
 
   if (chatEndpoint) {
     try {
@@ -97,29 +111,32 @@ const sendChat = async (question) => {
   }
 
   if (window.puter?.ai?.chat) {
+    const thinking = addMessage("Thinking...", "bot");
     try {
-      const reply = await window.puter.ai.chat(
-        [
-          { role: "system", content: siteContext },
-          { role: "user", content: question },
-        ],
-        { model: "gpt-5-nano" },
-      );
-      const text =
-        typeof reply === "string"
-          ? reply
-          : reply?.message?.content || reply?.content || reply?.text || String(reply || "");
+      const reply = await window.puter.ai.chat(chatHistory.slice(-10), false, {
+        model: "gpt-5-nano",
+        temperature: 0.4,
+        max_tokens: 220,
+      });
+      const text = getPuterText(reply);
 
       if (text.trim()) {
-        addMessage(text.trim());
+        thinking.textContent = text.trim();
+        chatHistory.push({ role: "assistant", content: text.trim() });
         return;
       }
     } catch {
       // Falls back to the local guide if the free AI provider is unavailable or asks the visitor to sign in.
+    } finally {
+      if (thinking.textContent === "Thinking...") {
+        thinking.remove();
+      }
     }
   }
 
-  addMessage(localAnswer(question));
+  const fallback = localAnswer(question);
+  addMessage(fallback);
+  chatHistory.push({ role: "assistant", content: fallback });
 };
 
 chatToggle?.addEventListener("click", () => {
