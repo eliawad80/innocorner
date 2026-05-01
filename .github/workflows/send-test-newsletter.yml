@@ -2,6 +2,15 @@ name: Send Test Newsletter
 
 on:
   workflow_dispatch:
+    inputs:
+      brevo_list_ids:
+        description: "Comma-separated Brevo list IDs. Leave empty to send a test email only."
+        required: false
+        default: ""
+      test_emails:
+        description: "Comma-separated test recipients used when no list IDs are provided."
+        required: false
+        default: "info@innocorner.com"
 
 permissions:
   contents: read
@@ -17,4 +26,6 @@ jobs:
         env:
           BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_LIST_IDS: ${{ inputs.brevo_list_ids }}
+          BREVO_TEST_EMAILS: ${{ inputs.test_emails }}
         run: node scripts/send-approved-test-newsletter.mjs

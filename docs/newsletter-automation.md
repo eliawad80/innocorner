@@ -19,10 +19,26 @@ The public Insights page should show only the finished newsletter archive:
 - newsletter title
 - sent date
 - short topic label
-- expandable or linked newsletter details
+- a one- or two-line summary
+- a link to the dedicated article page
 
 The collection, summarization, rewriting, and approval mechanism is internal and should not be described on the public
 website.
+
+## Editorial standard
+
+Every approved edition should read like a professional InnoCorner publication, not an automation transcript.
+
+- Never mention private workflow details such as how many emails were collected, who forwarded them, labels, approval
+  messages, source email IDs, draft mechanics, or internal tooling.
+- Rewrite the source material in InnoCorner's voice: strategic, practical, calm, and useful for business leaders.
+- Keep the depth close to the original material while concentrating it into a clear briefing. Avoid thin summaries.
+- Group related stories into business themes, explain why they matter, and add practical next steps.
+- Include a short "Resources mentioned" section when useful, with clean source links or source names.
+- Add relevant images only when rights, source stability, and visual quality are acceptable. Do not hotlink private email
+  images, tracking pixels, or copyrighted images unless the source clearly allows it.
+- Public archive rows should stay brief: title, sent/published date, topic labels, and one or two lines maximum.
+- The full edition belongs on a dedicated article page linked from the archive.
 
 ## Email sending identity
 
@@ -59,7 +75,8 @@ After approval:
 
 1. Publish the approved edition to the public Insights archive.
 2. Send the approved edition to subscribers from `newsletter@innocorner.com`.
-3. Keep a record of the approval email, sent date, subject, source email IDs, and published edition title.
+3. Keep private records of approval, sent date, subject, source email IDs, and published edition title outside the public
+   website and subscriber email.
 
 ## Possible tools
 
