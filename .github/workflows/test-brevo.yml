@@ -1,4 +1,4 @@
-name: Test Brevo API
+name: Test Brevo MCP
 
 on:
   workflow_dispatch:
@@ -13,7 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Test Brevo API key
+      - name: Test Brevo MCP token
         env:
+          BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
-        run: node scripts/test-brevo.mjs
+        run: node scripts/test-brevo-mcp.mjs

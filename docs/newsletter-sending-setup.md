@@ -62,13 +62,14 @@ Save secrets to GitHub Actions from the local machine:
 
 This stores:
 
-- `BREVO_API_KEY`
-- `BREVO_MCP_API_KEY` if provided
+- `BREVO_MCP_API_KEY`
+- `BREVO_API_KEY` if provided
 
 The public website must never receive these keys. Newsletter sending must happen from a server-side workflow, scheduled
 job, or approved automation.
 
-After saving `BREVO_API_KEY`, run the GitHub Actions workflow named `Test Brevo API` to verify the key.
+If the MCP option is activated in Brevo, the normal API key is deactivated and the MCP token becomes the primary
+credential. After saving `BREVO_MCP_API_KEY`, run the GitHub Actions workflow named `Test Brevo MCP` to verify the token.
 
 Brevo may ask for:
 

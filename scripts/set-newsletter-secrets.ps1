@@ -10,16 +10,16 @@ function Read-SecretText($Prompt) {
   }
 }
 
-$brevoApiKey = Read-SecretText "Paste BREVO_API_KEY"
-if (-not $brevoApiKey) {
-  throw "BREVO_API_KEY is required."
+$brevoMcpApiKey = Read-SecretText "Paste BREVO_MCP_API_KEY"
+if (-not $brevoMcpApiKey) {
+  throw "BREVO_MCP_API_KEY is required."
 }
 
-$brevoApiKey | gh secret set BREVO_API_KEY
+$brevoMcpApiKey | gh secret set BREVO_MCP_API_KEY
 
-$brevoMcpApiKey = Read-SecretText "Paste BREVO_MCP_API_KEY, or press Enter to skip"
-if ($brevoMcpApiKey) {
-  $brevoMcpApiKey | gh secret set BREVO_MCP_API_KEY
+$brevoApiKey = Read-SecretText "Paste BREVO_API_KEY, or press Enter to skip"
+if ($brevoApiKey) {
+  $brevoApiKey | gh secret set BREVO_API_KEY
 }
 
-Write-Host "Newsletter secrets saved to GitHub Actions."
+Write-Host "Newsletter secrets saved to GitHub Actions. MCP token is the primary Brevo credential."
