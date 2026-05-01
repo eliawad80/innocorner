@@ -5,9 +5,14 @@ Independent rebuild of the InnoCorner marketing website, replacing the Lovable-g
 ## What is included
 
 - Responsive homepage with Home, Services, Products, About, and Contact sections
+- Insights page with articles/news cards, FAQ, newsletter signup, and newsletter workflow content
 - Current InnoCorner copy, contact details, and logo
 - Dependency-free HTML, CSS, and JavaScript
 - Supabase Edge Function wrapper for deployment on an active Supabase project
+
+## Newsletter automation
+
+See `docs/newsletter-automation.md` for the recommended email-to-newsletter workflow.
 
 ## Local preview
 

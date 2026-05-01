@@ -289,6 +289,18 @@ h3 {
   background: #eef8fc;
 }
 
+.insights-preview {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  background: var(--white);
+}
+
+.insights-preview > div {
+  max-width: 760px;
+}
+
 .section-heading {
   max-width: 820px;
   margin-bottom: 34px;
@@ -401,6 +413,185 @@ h3 {
 .site-footer p,
 .site-footer span {
   margin: 0;
+}
+
+.page-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.44fr);
+  gap: clamp(28px, 5vw, 68px);
+  align-items: center;
+  padding: clamp(54px, 8vw, 104px) clamp(20px, 5vw, 80px);
+  background:
+    linear-gradient(125deg, rgba(14, 143, 114, 0.1), transparent 34%),
+    linear-gradient(315deg, rgba(13, 155, 230, 0.12), transparent 38%),
+    var(--white);
+}
+
+.page-hero h1 {
+  max-width: 760px;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+}
+
+.page-hero p {
+  max-width: 700px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.newsletter-card {
+  display: grid;
+  gap: 14px;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7fafc;
+  box-shadow: var(--shadow);
+}
+
+.newsletter-card span,
+.article-card span {
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.newsletter-card h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
+}
+
+.newsletter-card label {
+  display: grid;
+  gap: 8px;
+  font-weight: 800;
+}
+
+.newsletter-card input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 13px 14px;
+  color: var(--ink);
+  background: var(--white);
+  font: inherit;
+}
+
+.article-section {
+  background: #eef8fc;
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.article-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 250px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.article-card.featured {
+  grid-column: span 2;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--ink), #0d4d66);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.article-card h3 {
+  margin-bottom: 0;
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+}
+
+.article-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.article-card.featured p,
+.article-card.featured span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.article-card a {
+  align-self: end;
+  width: fit-content;
+  margin-top: 12px;
+  color: var(--white);
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.newsletter-system {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 80px);
+  background: var(--white);
+}
+
+.newsletter-system > div:first-child p {
+  max-width: 640px;
+  color: var(--muted);
+}
+
+.workflow-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.workflow-list article {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7fafc;
+}
+
+.workflow-list strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.workflow-list p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.faq-section {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+  max-width: 980px;
+}
+
+.faq-list details {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.faq-list summary {
+  cursor: pointer;
+  padding: 18px 20px;
+  font-weight: 900;
+}
+
+.faq-list p {
+  margin: 0;
+  padding: 0 20px 20px;
+  color: rgba(255, 255, 255, 0.76);
 }
 
 .chatbot {
@@ -578,9 +769,11 @@ h3 {
   }
 
   .hero,
+  .page-hero,
   .split,
   .about,
-  .contact {
+  .contact,
+  .newsletter-system {
     grid-template-columns: 1fr;
   }
 
@@ -590,8 +783,18 @@ h3 {
 
   .trust-band,
   .product-strip,
+  .article-grid,
   .values {
     grid-template-columns: 1fr;
+  }
+
+  .article-card.featured {
+    grid-column: auto;
+  }
+
+  .insights-preview {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
@@ -610,8 +813,14 @@ h3 {
   }
 
   .hero-actions .button,
-  .contact-form .button {
+  .contact-form .button,
+  .newsletter-card .button,
+  .insights-preview .button {
     width: 100%;
+  }
+
+  .workflow-list {
+    grid-template-columns: 1fr;
   }
 
   .chatbot {

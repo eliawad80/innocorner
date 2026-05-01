@@ -10,7 +10,7 @@ const chatSuggestions = document.querySelector(".chatbot-suggestions");
 const chatEndpoint = window.INNOCORNER_CHAT_ENDPOINT || "";
 const freeChatEndpoint = "https://text.pollinations.ai/openai";
 const siteContext =
-  "You are the InnoCorner AI Guide on innocorner.com. InnoCorner is a Brussels-based futuristic specialist offering AI automation workflows, RAG for sensitive information, self-hosted n8n, Make automations, Zabbix monitoring, security training, AI RAG training, AI training, AI for Business training, and 10- and 20-year future-readiness consultancy. Be concise, practical, warm, and invite visitors to contact info@innocorner.com when they want a tailored plan.";
+  "You are the InnoCorner AI Guide on innocorner.com. InnoCorner is a Brussels-based futuristic specialist offering AI automation workflows, RAG for sensitive information, self-hosted n8n, Make automations, Zabbix monitoring, security training, AI RAG training, AI training, AI for Business training, newsletter automation, article/news briefings, and 10- and 20-year future-readiness consultancy. Be concise, practical, warm, and invite visitors to contact info@innocorner.com when they want a tailored plan.";
 const chatHistory = [{ role: "system", content: siteContext }];
 
 menuButton?.addEventListener("click", () => {
@@ -76,7 +76,11 @@ const localAnswer = (question) => {
     return "InnoCorner offers security-focused training and consultancy covering practical security habits, sensitive data handling, AI risk, and operational resilience.";
   }
 
-  return "InnoCorner helps with AI automation, RAG for sensitive information, self-hosted n8n, Make, Zabbix, security training, AI courses, and future-readiness consultancy. For a tailored answer, share your company goal or the workflow you want to improve.";
+  if (text.includes("newsletter") || text.includes("article") || text.includes("news") || text.includes("publish")) {
+    return "For newsletter automation, InnoCorner can collect selected email articles, summarize them, rewrite them as original briefings, send a draft for approval, then publish to subscribers and the Insights page.";
+  }
+
+  return "InnoCorner helps with AI automation, RAG for sensitive information, self-hosted n8n, Make, Zabbix, security training, AI courses, newsletter automation, and future-readiness consultancy. For a tailored answer, share your company goal or the workflow you want to improve.";
 };
 
 const sendChat = async (question) => {

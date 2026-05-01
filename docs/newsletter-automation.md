@@ -1,0 +1,42 @@
+# Newsletter automation plan
+
+This is the recommended workflow for turning articles received by email into a reviewed InnoCorner newsletter and public insights posts.
+
+## Recommended setup
+
+1. Create a dedicated inbox such as `news@innocorner.com`.
+2. Use Make or self-hosted n8n to watch the inbox.
+3. Save each approved source email into Supabase with title, link, sender, date, topic, and original excerpt.
+4. Summarize each article into key points, business impact, risk, and suggested action.
+5. Rewrite the weekly digest in InnoCorner's voice with attribution to the original sources.
+6. Send the draft to the team for approval.
+7. After approval, publish the newsletter to subscribers and create/update an article on `insights.html`.
+
+## Important rule
+
+Keep a human approval step before publishing. Automated summaries can miss nuance, source restrictions, or legal context.
+
+## Possible tools
+
+- Gmail or Outlook mailbox for collection.
+- Make for fast no-code automation.
+- Self-hosted n8n for more control and sensitive workflows.
+- Supabase for subscribers, article drafts, approval status, and published posts.
+- Brevo, Mailchimp, Buttondown, or a similar email service for subscriber delivery.
+
+## Supabase tables
+
+The migration in `supabase/migrations/20260501190000_newsletter_insights.sql` creates:
+
+- `newsletter_subscribers` for website signups.
+- `insight_articles` for drafted and published article/news posts.
+- `newsletter_editions` for combined digest drafts and sent editions.
+
+## First production version
+
+Start with a weekly workflow:
+
+- Collect all emails tagged `newsletter`.
+- Generate one draft digest every Friday.
+- Email the draft to `info@innocorner.com`.
+- Publish only after manual approval.
