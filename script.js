@@ -8,6 +8,7 @@ const chatForm = document.querySelector(".chatbot-form");
 const chatInput = chatForm?.querySelector("input");
 const chatSuggestions = document.querySelector(".chatbot-suggestions");
 const chatEndpoint = window.INNOCORNER_CHAT_ENDPOINT || "";
+const freeChatEndpoint = "https://gen.pollinations.ai/text/";
 const siteContext =
   "You are the InnoCorner AI Guide on innocorner.com. InnoCorner is a Brussels-based futuristic specialist offering AI automation workflows, RAG for sensitive information, self-hosted n8n, Make automations, Zabbix monitoring, security training, AI RAG training, AI training, AI for Business training, and 10- and 20-year future-readiness consultancy. Be concise, practical, warm, and invite visitors to contact info@innocorner.com when they want a tailored plan.";
 const chatHistory = [{ role: "system", content: siteContext }];
@@ -48,17 +49,6 @@ const addMessage = (text, type = "bot") => {
   return message;
 };
 
-const getPuterText = (reply) => {
-  if (typeof reply === "string") return reply;
-  if (typeof reply?.message?.content === "string") return reply.message.content;
-  if (Array.isArray(reply?.message?.content)) {
-    return reply.message.content.map((part) => part?.text || part?.content || "").join("");
-  }
-  if (typeof reply?.content === "string") return reply.content;
-  if (typeof reply?.text === "string") return reply.text;
-  return "";
-};
-
 const localAnswer = (question) => {
   const text = question.toLowerCase();
 
@@ -89,6 +79,22 @@ const localAnswer = (question) => {
   return "InnoCorner helps with AI automation, RAG for sensitive information, self-hosted n8n, Make, Zabbix, security training, AI courses, and future-readiness consultancy. For a tailored answer, share your company goal or the workflow you want to improve.";
 };
 
+const buildFreePrompt = (question) => {
+  const recentMessages = chatHistory
+    .filter((message) => message.role !== "system")
+    .slice(-6)
+    .map((message) => `${message.role}: ${message.content}`)
+    .join("\n");
+
+  return `${siteContext}
+
+Recent conversation:
+${recentMessages || "No previous messages."}
+
+Visitor: ${question}
+InnoCorner AI Guide:`;
+};
+
 const sendChat = async (question) => {
   addMessage(question, "user");
   chatHistory.push({ role: "user", content: question });
@@ -110,15 +116,14 @@ const sendChat = async (question) => {
     }
   }
 
-  if (window.puter?.ai?.chat) {
+  if (freeChatEndpoint) {
     const thinking = addMessage("Thinking...", "bot");
     try {
-      const reply = await window.puter.ai.chat(chatHistory.slice(-10), false, {
-        model: "gpt-5-nano",
-        temperature: 0.4,
-        max_tokens: 220,
+      const prompt = buildFreePrompt(question);
+      const response = await fetch(`${freeChatEndpoint}${encodeURIComponent(prompt)}?model=openai`, {
+        headers: { accept: "text/plain" },
       });
-      const text = getPuterText(reply);
+      const text = response.ok ? await response.text() : "";
 
       if (text.trim()) {
         thinking.textContent = text.trim();
