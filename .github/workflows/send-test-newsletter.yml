@@ -1,0 +1,20 @@
+name: Send Test Newsletter
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Send approved test newsletter
+        env:
+          BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: node scripts/send-approved-test-newsletter.mjs
