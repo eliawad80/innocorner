@@ -77,7 +77,6 @@ const campaign = await brevoRequest("/emailCampaigns", {
     subject: "InnoCorner Future Briefing: Quantum risk, faster batteries, and AI automation",
     htmlContent,
     ...(listIds.length ? { recipients: { listIds } } : {}),
-    tag: "innocorner-future-briefing",
   }),
 });
 
