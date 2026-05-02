@@ -50,9 +50,25 @@ a {
   backdrop-filter: blur(18px);
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
 .brand img {
+  flex: 0 0 auto;
   width: 168px;
   height: auto;
+}
+
+.brand span {
+  max-width: 250px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.25;
 }
 
 .site-nav {
@@ -1035,6 +1051,10 @@ h3 {
 }
 
 @media (max-width: 900px) {
+  .brand span {
+    display: none;
+  }
+
   .menu-toggle {
     display: block;
   }
