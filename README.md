@@ -5,7 +5,7 @@ Independent rebuild of the InnoCorner marketing website, replacing the Lovable-g
 ## What is included
 
 - Responsive homepage with Home, Services, Products, About, and Contact sections
-- Insights page with articles/news cards, FAQ, newsletter signup, and newsletter workflow content
+- Articles page with newsletter editions, news briefings, FAQ, and subscription signup
 - Privacy policy, newsletter consent language, contact consent language, and a necessary-storage privacy notice
 - Current InnoCorner copy, contact details, and logo
 - Dependency-free HTML, CSS, and JavaScript

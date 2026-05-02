@@ -116,7 +116,7 @@ After successful sending history, the policy can later move to `quarantine`, the
 4. Codex groups by topic, removes duplicates, and prepares a newsletter draft.
 5. Codex emails the draft approval request to `info@innocorner.com`.
 6. User replies with the exact approval phrase, for example `APPROVED 2026-05-08`.
-7. Approved draft is published to the Insights archive.
+7. Approved draft is published to the Articles archive.
 8. Approved draft is sent to the Brevo `InnoCorner Newsletter` list from `newsletter@innocorner.com`.
 
 Do not auto-send or auto-publish without approval.

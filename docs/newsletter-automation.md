@@ -15,7 +15,7 @@ This is the recommended workflow for turning articles received by email into a r
 
 ## Publishing model
 
-The public Insights page should show only the finished newsletter archive:
+The public Articles page should show only the finished newsletter archive:
 
 - newsletter title
 - sent date
@@ -81,7 +81,7 @@ newsletter stays in draft mode.
 
 After approval:
 
-1. Publish the approved edition to the public Insights archive.
+1. Publish the approved edition to the public Articles archive.
 2. Send the approved edition to subscribers from `newsletter@innocorner.com`.
 3. Keep private records of approval, sent date, subject, source email IDs, and published edition title outside the public
    website and subscriber email.
