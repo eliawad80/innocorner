@@ -623,14 +623,17 @@ h3 {
 
 .brevo-newsletter-embed {
   min-width: 0;
+  width: min(100%, 540px);
+  margin: 0 auto;
 }
 
 .brevo-newsletter-embed iframe {
   display: block;
-  width: 100%;
+  width: 540px;
   max-width: 540px;
-  height: 300px;
-  margin: 0 auto;
+  height: 305px;
+  max-height: 305px;
+  margin: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
