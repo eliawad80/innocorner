@@ -34,7 +34,10 @@ Every approved edition should read like a professional InnoCorner publication, n
 - Rewrite the source material in InnoCorner's voice: strategic, practical, calm, and useful for business leaders.
 - Keep the depth close to the original material while concentrating it into a clear briefing. Avoid thin summaries.
 - Group related stories into business themes, explain why they matter, and add practical next steps.
-- Include a short "Resources mentioned" section when useful, with clean source links or source names.
+- Include a short "Resources mentioned" section only on the public article page when useful, with clean source links or
+  source names.
+- Do not include source/resource links in subscriber emails or approval emails. The email should be a professional
+  InnoCorner briefing and link readers to the public article for any external resources.
 - Add relevant images only when rights, source stability, and visual quality are acceptable. Do not hotlink private email
   images, tracking pixels, or copyrighted images unless the source clearly allows it.
 - Public archive rows should stay brief: title, sent/published date, topic labels, and one or two lines maximum.

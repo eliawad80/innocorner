@@ -101,14 +101,6 @@ const htmlContent = `<!doctype html>
         <li>Create a 10-year readiness map for security, automation, data governance, and infrastructure change.</li>
       </ul>
 
-      <h2 style="font-size:22px;line-height:1.2;margin-top:28px;">Resources mentioned</h2>
-      <ul style="padding-left:20px;">
-        <li><a href="https://www.nist.gov/cybersecurity-and-privacy/what-post-quantum-cryptography" style="color:#0d9be6;font-weight:700;">NIST: What Is Post-Quantum Cryptography?</a></li>
-        <li><a href="https://www.nist.gov/node/1856616" style="color:#0d9be6;font-weight:700;">NIST: First finalized post-quantum encryption standards</a></li>
-        <li><a href="https://singularityhub.com/2026/04/23/catls-new-ev-battery-charges-in-six-minutes/" style="color:#0d9be6;font-weight:700;">Singularity Hub: CATL's New EV Battery Charges in Six Minutes</a></li>
-        <li><a href="https://www.fountainlife.com/article/earth-day" style="color:#0d9be6;font-weight:700;">Fountain Life: How your environment becomes your biology</a></li>
-      </ul>
-
       <p style="margin-top:28px;"><a href="${articleUrl}" style="display:inline-block;padding:13px 18px;border-radius:8px;background:#f46f22;color:#ffffff;font-weight:700;text-decoration:none;">Read the full article on InnoCorner</a></p>
       <hr style="border:0;border-top:1px solid #d9e0e8;margin:28px 0;" />
       <p style="color:#5e6b7f;font-size:13px;">InnoCorner Future Briefing helps business leaders prepare for AI, security, automation, and long-term technology change. You can reply to this email at info@innocorner.com.</p>
