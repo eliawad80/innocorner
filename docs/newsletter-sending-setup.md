@@ -64,7 +64,6 @@ This stores:
 
 - `BREVO_API_KEY`
 - `BREVO_LIST_ID`
-- `SUPABASE_SERVICE_ROLE_KEY`
 
 The public website must never receive these keys. Newsletter sending must happen from a server-side workflow, scheduled
 job, or approved automation.
@@ -73,9 +72,14 @@ Use Brevo's normal REST API key for production newsletter sending. The MCP token
 REST API is better for subscriber list management and normal campaign sends. If Brevo disables the REST API key while MCP
 is active, disable MCP and create a new REST API key, then save it as `BREVO_API_KEY`.
 
-Create or identify a Brevo contact list named `InnoCorner Newsletter`, then save its numeric ID as `BREVO_LIST_ID`.
-Run the GitHub Actions workflow named `Sync Brevo Subscribers` to copy Supabase newsletter subscribers into that Brevo
-list.
+Create or identify a Brevo contact list named `InnoCorner Newsletter`, then save its numeric ID as `BREVO_LIST_ID`. The
+website uses Brevo's embedded form, so normal visitor subscriptions go directly into Brevo.
+
+Set Brevo's success page or post-confirmation redirect to:
+
+```txt
+https://innocorner.com/newsletter-thank-you.html
+```
 
 Brevo may ask for:
 
@@ -113,8 +117,7 @@ After successful sending history, the policy can later move to `quarantine`, the
 5. Codex emails the draft approval request to `info@innocorner.com`.
 6. User replies with the exact approval phrase, for example `APPROVED 2026-05-08`.
 7. Approved draft is published to the Insights archive.
-8. Supabase subscribers are synced to the Brevo `InnoCorner Newsletter` list.
-9. Approved draft is sent to that Brevo list from `newsletter@innocorner.com`.
+8. Approved draft is sent to the Brevo `InnoCorner Newsletter` list from `newsletter@innocorner.com`.
 
 Do not auto-send or auto-publish without approval.
 

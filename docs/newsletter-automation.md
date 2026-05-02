@@ -86,29 +86,21 @@ After approval:
 - Gmail or Outlook mailbox for collection.
 - Make for fast no-code automation.
 - Self-hosted n8n for more control and sensitive workflows.
-- Supabase for subscribers, article drafts, approval status, and published posts.
+- Supabase for future article drafts, approval status, and published posts if the workflow becomes database-backed.
 - Brevo, Mailchimp, Buttondown, or a similar email service for subscriber delivery.
 
-## Supabase tables
+## Subscriber capture
 
-The migration in `supabase/migrations/20260501190000_newsletter_insights.sql` creates:
+The public website uses Brevo's embedded subscription form. Visitors subscribe directly into the Brevo audience/list,
+which avoids a custom website database sync for the first production version.
 
-- `newsletter_subscribers` for website signups.
-- `insight_articles` for drafted and published article/news posts.
-- `newsletter_editions` for combined digest drafts and sent editions.
-
-Active Supabase project:
+Custom welcome page:
 
 ```txt
-evhvmngwtruzdsfgcmii
-https://evhvmngwtruzdsfgcmii.supabase.co
+https://innocorner.com/newsletter-thank-you.html
 ```
 
-The public website newsletter form writes new subscribers into `newsletter_subscribers` with `status = 'pending'` and
-`source = 'website'`. Subscriber delivery through Brevo uses server-side contact/list synchronization because Brevo keys
-must not be exposed in browser JavaScript. The GitHub Actions workflow `Sync Brevo Subscribers` reads this Supabase table
-with `SUPABASE_SERVICE_ROLE_KEY`, creates/updates Brevo contacts with `BREVO_API_KEY`, and attaches them to
-`BREVO_LIST_ID`.
+Use that URL in Brevo as the success page or post-confirmation redirect where available.
 
 ## First production version
 
@@ -138,7 +130,6 @@ Required secrets before full automation can run:
 
 - `BREVO_API_KEY`
 - `BREVO_LIST_ID`
-- `SUPABASE_SERVICE_ROLE_KEY`
 - `GMAIL_CLIENT_ID`
 - `GMAIL_CLIENT_SECRET`
 - `GMAIL_REFRESH_TOKEN`

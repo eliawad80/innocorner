@@ -22,10 +22,4 @@ if (-not $brevoListId) {
 }
 $brevoListId | gh secret set BREVO_LIST_ID
 
-$supabaseServiceRoleKey = Read-SecretText "Paste SUPABASE_SERVICE_ROLE_KEY"
-if (-not $supabaseServiceRoleKey) {
-  throw "SUPABASE_SERVICE_ROLE_KEY is required."
-}
-$supabaseServiceRoleKey | gh secret set SUPABASE_SERVICE_ROLE_KEY
-
 Write-Host "Newsletter secrets saved to GitHub Actions for Brevo REST API sending."
