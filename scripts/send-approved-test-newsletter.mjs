@@ -10,10 +10,12 @@ const listIds = (process.env.BREVO_LIST_IDS || process.env.BREVO_LIST_ID || "")
   .split(",")
   .map((value) => Number(value.trim()))
   .filter((value) => Number.isInteger(value) && value > 0);
+const sendMode = process.env.BREVO_SEND_MODE || "list";
 const testEmails = (process.env.BREVO_TEST_EMAILS || "info@innocorner.com")
   .split(",")
   .map((value) => value.trim())
   .filter(Boolean);
+const shouldSendToList = sendMode !== "test" && listIds.length > 0;
 
 const editionDate = "2026-05-02";
 const articleUrl = "https://innocorner.com/articles/programmable-biology-transferable-robotics-readiness-gap.html";
@@ -101,7 +103,7 @@ const campaign = await brevoRequest("/emailCampaigns", {
     replyTo: "info@innocorner.com",
     subject: "InnoCorner Future Briefing: Programmable biology and transferable robotics",
     htmlContent,
-    ...(listIds.length ? { recipients: { listIds } } : {}),
+    ...(shouldSendToList ? { recipients: { listIds } } : {}),
   }),
 });
 
@@ -113,7 +115,7 @@ if (!campaign?.id) {
 
 console.log(`Created Brevo campaign ${campaign.id}.`);
 
-if (listIds.length) {
+if (shouldSendToList) {
   await brevoRequest(`/emailCampaigns/${campaign.id}/sendNow`, { method: "POST", body: "" });
   console.log(`Sent Brevo campaign ${campaign.id} to list IDs: ${listIds.join(", ")}.`);
 } else {

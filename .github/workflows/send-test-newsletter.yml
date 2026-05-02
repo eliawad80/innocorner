@@ -1,8 +1,16 @@
-name: Send Test Newsletter
+name: Send Newsletter
 
 on:
   workflow_dispatch:
     inputs:
+      send_mode:
+        description: "Send to the Brevo list or send a test copy only."
+        required: true
+        default: list
+        type: choice
+        options:
+          - list
+          - test
       brevo_list_ids:
         description: "Comma-separated Brevo list IDs. Leave empty to send a test email only."
         required: false
@@ -22,9 +30,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Send approved test newsletter
+      - name: Send approved newsletter
         env:
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_SEND_MODE: ${{ inputs.send_mode }}
           BREVO_LIST_IDS: ${{ inputs.brevo_list_ids || secrets.BREVO_LIST_ID }}
           BREVO_TEST_EMAILS: ${{ inputs.test_emails }}
         run: node scripts/send-approved-test-newsletter.mjs
