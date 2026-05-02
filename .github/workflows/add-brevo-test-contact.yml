@@ -1,0 +1,26 @@
+name: Add Brevo Test Contact
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_emails:
+        description: "Comma-separated test contacts to add/update in Brevo."
+        required: false
+        default: "elias.awad80@gmail.com"
+
+permissions:
+  contents: read
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add Brevo test contact
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_LIST_ID: ${{ secrets.BREVO_LIST_ID }}
+          BREVO_TEST_EMAILS: ${{ inputs.test_emails }}
+        run: node scripts/add-brevo-test-contact.mjs
