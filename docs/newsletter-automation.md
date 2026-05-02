@@ -10,7 +10,8 @@ This is the recommended workflow for turning articles received by email into a r
 4. Summarize each article into key points, business impact, risk, and suggested action.
 5. Rewrite the weekly digest in InnoCorner's voice with attribution to the original sources.
 6. Send the draft to `info@innocorner.com` for approval.
-7. After approval, publish the newsletter to subscribers and create/update an article on `insights.html`.
+7. On the next approval check after the exact approval phrase is received, publish the newsletter to subscribers and
+   create/update an article on `insights.html` automatically.
 
 ## Publishing model
 
@@ -84,6 +85,11 @@ After approval:
 2. Send the approved edition to subscribers from `newsletter@innocorner.com`.
 3. Keep private records of approval, sent date, subject, source email IDs, and published edition title outside the public
    website and subscriber email.
+
+The active Codex heartbeat checks the approval inbox repeatedly. Once it sees the exact approval phrase for an
+unpublished edition, it should continue without another manual instruction: create the dedicated article page, update the
+archive row, commit and push the site, and trigger the Brevo send workflow for list ID 2. It must check for an existing
+published article or sent campaign first so the same approval cannot create duplicate publications or duplicate emails.
 
 ## Possible tools
 
