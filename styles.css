@@ -63,14 +63,40 @@ a {
   height: auto;
 }
 
-.header-slogan {
+.header-center {
   justify-self: start;
+  display: grid;
+  gap: 7px;
+  align-content: center;
+}
+
+.header-slogan {
   max-width: 620px;
   margin: 0;
   color: var(--ink);
   font-size: clamp(1rem, 1.25vw, 1.42rem);
   font-weight: 800;
   line-height: 1.2;
+}
+
+.header-newsletter-link {
+  justify-self: start;
+  min-height: 30px;
+  padding: 5px 12px;
+  border: 1px solid rgba(13, 155, 230, 0.26);
+  border-radius: 999px;
+  color: var(--blue);
+  background: #edf7fd;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.header-newsletter-link:hover,
+.header-newsletter-link:focus-visible {
+  color: var(--white);
+  background: var(--blue);
+  outline: none;
 }
 
 .site-nav {
@@ -340,6 +366,7 @@ h3 {
 .button.light {
   border-color: rgba(255, 255, 255, 0.46);
   color: var(--white);
+  background: transparent;
 }
 
 .button.light:hover,
@@ -605,8 +632,9 @@ h3 {
   height: 250px;
   margin: 0 auto;
   border: 0;
-  border-radius: 8px;
-  background: var(--white);
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden;
 }
 
 .archive-section {
@@ -1064,7 +1092,7 @@ h3 {
     justify-content: space-between;
   }
 
-  .header-slogan {
+  .header-center {
     display: none;
   }
 
