@@ -97,6 +97,17 @@ The migration in `supabase/migrations/20260501190000_newsletter_insights.sql` cr
 - `insight_articles` for drafted and published article/news posts.
 - `newsletter_editions` for combined digest drafts and sent editions.
 
+Active Supabase project:
+
+```txt
+evhvmngwtruzdsfgcmii
+https://evhvmngwtruzdsfgcmii.supabase.co
+```
+
+The public website newsletter form writes new subscribers into `newsletter_subscribers` with `status = 'pending'` and
+`source = 'website'`. Subscriber delivery through Brevo still needs server-side contact/list synchronization because
+Brevo keys must not be exposed in browser JavaScript.
+
 ## First production version
 
 Start with a weekly workflow:

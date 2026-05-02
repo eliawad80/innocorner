@@ -10,6 +10,7 @@ Independent rebuild of the InnoCorner marketing website, replacing the Lovable-g
 - Current InnoCorner copy, contact details, and logo
 - Dependency-free HTML, CSS, and JavaScript
 - Supabase Edge Function wrapper for deployment on an active Supabase project
+- Newsletter form writes signups to Supabase project `evhvmngwtruzdsfgcmii`
 
 ## Newsletter automation
 

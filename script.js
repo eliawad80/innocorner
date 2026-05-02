@@ -14,6 +14,10 @@ const cookieAccept = document.querySelector(".cookie-accept");
 const cookieSettings = document.querySelectorAll(".cookie-settings");
 const chatEndpoint = window.INNOCORNER_CHAT_ENDPOINT || "";
 const freeChatEndpoint = "https://text.pollinations.ai/openai";
+const newsletterConfig = {
+  url: "https://evhvmngwtruzdsfgcmii.supabase.co",
+  key: "sb_publishable_J71z13ZvEXmPxx-u1lb2jg_NsGb831D",
+};
 const siteContext =
   "You are the InnoCorner AI Guide on innocorner.com. InnoCorner is a Brussels-based futuristic specialist offering AI automation workflows, RAG for sensitive information, self-hosted n8n, Make automations, Zabbix monitoring, security training, AI RAG training, AI training, AI for Business training, Future Briefing newsletters, and 10- and 20-year future-readiness consultancy. Be concise, practical, warm, and invite visitors to contact info@innocorner.com when they want a tailored plan.";
 const chatHistory = [{ role: "system", content: siteContext }];
@@ -172,22 +176,61 @@ chatForm?.addEventListener("submit", (event) => {
 });
 
 newsletterForms.forEach((form) => {
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const input = form.querySelector('input[type="email"]');
+    const button = form.querySelector('button[type="submit"]');
     const note = form.querySelector(".form-note");
-    const email = input?.value.trim();
+    const email = input?.value.trim().toLowerCase();
 
     if (!email) return;
 
+    button?.setAttribute("disabled", "");
+
     if (note) {
-      note.textContent = "Thank you. Your subscription request is ready to send to InnoCorner.";
+      note.textContent = "Saving your subscription...";
     }
 
-    const subject = encodeURIComponent("Newsletter subscription");
-    const body = encodeURIComponent(`Please add ${email} to the InnoCorner newsletter list.`);
-    window.location.href = `mailto:info@innocorner.com?subject=${subject}&body=${body}`;
-    form.reset();
+    try {
+      const response = await fetch(`${newsletterConfig.url}/rest/v1/newsletter_subscribers`, {
+        method: "POST",
+        headers: {
+          apikey: newsletterConfig.key,
+          authorization: `Bearer ${newsletterConfig.key}`,
+          "content-type": "application/json",
+          prefer: "return=minimal",
+        },
+        body: JSON.stringify({
+          email,
+          status: "pending",
+          source: "website",
+        }),
+      });
+
+      if (response.ok) {
+        if (note) {
+          note.textContent = "Thank you. You are on the InnoCorner newsletter list.";
+        }
+        form.reset();
+        return;
+      }
+
+      if (response.status === 409) {
+        if (note) {
+          note.textContent = "You are already on the InnoCorner newsletter list.";
+        }
+        form.reset();
+        return;
+      }
+
+      throw new Error("Subscription failed");
+    } catch {
+      if (note) {
+        note.textContent = "We could not save your subscription. Please email info@innocorner.com.";
+      }
+    } finally {
+      button?.removeAttribute("disabled");
+    }
   });
 });
 
