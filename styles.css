@@ -40,9 +40,10 @@ a {
   position: sticky;
   top: 0;
   z-index: 20;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(240px, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
+  column-gap: clamp(28px, 4vw, 72px);
   min-height: 76px;
   padding: 12px clamp(20px, 4vw, 64px);
   background: rgba(255, 255, 255, 0.92);
@@ -53,7 +54,6 @@ a {
 .brand {
   display: flex;
   align-items: center;
-  gap: 16px;
   min-width: 0;
 }
 
@@ -63,12 +63,14 @@ a {
   height: auto;
 }
 
-.brand span {
-  max-width: 250px;
-  color: var(--muted);
-  font-size: 0.86rem;
+.header-slogan {
+  justify-self: start;
+  max-width: 620px;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.25vw, 1.42rem);
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .site-nav {
@@ -1051,7 +1053,12 @@ h3 {
 }
 
 @media (max-width: 900px) {
-  .brand span {
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .header-slogan {
     display: none;
   }
 
