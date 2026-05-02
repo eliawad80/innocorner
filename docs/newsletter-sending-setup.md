@@ -49,7 +49,7 @@ In Brevo:
 4. Confirm sender `InnoCorner <newsletter@innocorner.com>` is verified in Brevo.
 5. Set reply-to to `info@innocorner.com`.
 6. Keep Brevo's domain authentication DNS records active in OVH.
-7. Store the Brevo API key and Brevo MCP API key only as deployment secrets, not inside the repository.
+7. Store the Brevo REST API key only as a deployment secret, not inside the repository.
 8. Never paste API keys into source files, public docs, commits, frontend JavaScript, or GitHub issues.
 
 ## Saving secrets
@@ -62,14 +62,20 @@ Save secrets to GitHub Actions from the local machine:
 
 This stores:
 
-- `BREVO_MCP_API_KEY`
-- `BREVO_API_KEY` if provided
+- `BREVO_API_KEY`
+- `BREVO_LIST_ID`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
 The public website must never receive these keys. Newsletter sending must happen from a server-side workflow, scheduled
 job, or approved automation.
 
-If the MCP option is activated in Brevo, the normal API key is deactivated and the MCP token becomes the primary
-credential. After saving `BREVO_MCP_API_KEY`, run the GitHub Actions workflow named `Test Brevo MCP` to verify the token.
+Use Brevo's normal REST API key for production newsletter sending. The MCP token is useful for experimentation, but the
+REST API is better for subscriber list management and normal campaign sends. If Brevo disables the REST API key while MCP
+is active, disable MCP and create a new REST API key, then save it as `BREVO_API_KEY`.
+
+Create or identify a Brevo contact list named `InnoCorner Newsletter`, then save its numeric ID as `BREVO_LIST_ID`.
+Run the GitHub Actions workflow named `Sync Brevo Subscribers` to copy Supabase newsletter subscribers into that Brevo
+list.
 
 Brevo may ask for:
 
@@ -107,7 +113,8 @@ After successful sending history, the policy can later move to `quarantine`, the
 5. Codex emails the draft approval request to `info@innocorner.com`.
 6. User replies with the exact approval phrase, for example `APPROVED 2026-05-08`.
 7. Approved draft is published to the Insights archive.
-8. Approved draft is sent to subscribers through Brevo from `newsletter@innocorner.com`.
+8. Supabase subscribers are synced to the Brevo `InnoCorner Newsletter` list.
+9. Approved draft is sent to that Brevo list from `newsletter@innocorner.com`.
 
 Do not auto-send or auto-publish without approval.
 

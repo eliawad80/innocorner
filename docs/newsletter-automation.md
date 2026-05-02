@@ -105,8 +105,10 @@ https://evhvmngwtruzdsfgcmii.supabase.co
 ```
 
 The public website newsletter form writes new subscribers into `newsletter_subscribers` with `status = 'pending'` and
-`source = 'website'`. Subscriber delivery through Brevo still needs server-side contact/list synchronization because
-Brevo keys must not be exposed in browser JavaScript.
+`source = 'website'`. Subscriber delivery through Brevo uses server-side contact/list synchronization because Brevo keys
+must not be exposed in browser JavaScript. The GitHub Actions workflow `Sync Brevo Subscribers` reads this Supabase table
+with `SUPABASE_SERVICE_ROLE_KEY`, creates/updates Brevo contacts with `BREVO_API_KEY`, and attaches them to
+`BREVO_LIST_ID`.
 
 ## First production version
 
@@ -134,7 +136,9 @@ Current workflow file:
 
 Required secrets before full automation can run:
 
-- `BREVO_MCP_API_KEY`
+- `BREVO_API_KEY`
+- `BREVO_LIST_ID`
+- `SUPABASE_SERVICE_ROLE_KEY`
 - `GMAIL_CLIENT_ID`
 - `GMAIL_CLIENT_SECRET`
 - `GMAIL_REFRESH_TOKEN`

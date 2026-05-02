@@ -24,8 +24,7 @@ jobs:
 
       - name: Send approved test newsletter
         env:
-          BREVO_MCP_API_KEY: ${{ secrets.BREVO_MCP_API_KEY }}
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
-          BREVO_LIST_IDS: ${{ inputs.brevo_list_ids }}
+          BREVO_LIST_IDS: ${{ inputs.brevo_list_ids || secrets.BREVO_LIST_ID }}
           BREVO_TEST_EMAILS: ${{ inputs.test_emails }}
         run: node scripts/send-approved-test-newsletter.mjs

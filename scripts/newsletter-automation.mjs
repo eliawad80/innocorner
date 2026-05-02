@@ -1,5 +1,12 @@
 const mode = process.env.MODE || "scheduled";
-const requiredSecrets = ["BREVO_MCP_API_KEY", "GMAIL_CLIENT_ID", "GMAIL_CLIENT_SECRET", "GMAIL_REFRESH_TOKEN"];
+const requiredSecrets = [
+  "BREVO_API_KEY",
+  "BREVO_LIST_ID",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "GMAIL_CLIENT_ID",
+  "GMAIL_CLIENT_SECRET",
+  "GMAIL_REFRESH_TOKEN",
+];
 const missingSecrets = requiredSecrets.filter((name) => !process.env[name]);
 
 console.log(`Newsletter automation mode: ${mode}`);
