@@ -32,12 +32,16 @@ Every approved edition should read like a professional InnoCorner publication, n
 - Never mention private workflow details such as how many emails were collected, who forwarded them, labels, approval
   messages, source email IDs, draft mechanics, or internal tooling.
 - Rewrite the source material in InnoCorner's voice: strategic, practical, calm, and useful for business leaders.
-- Keep the depth close to the original material while concentrating it into a clear briefing. Avoid thin summaries.
+- Keep the depth close to the original material while concentrating it into a clear briefing. Avoid thin summaries. Do
+  not drop important details, caveats, figures, names, examples, or practical implications from the articles.
 - Group related stories into business themes, explain why they matter, and add practical next steps.
 - Include a short "Resources mentioned" section only on the public article page when useful, with clean source links or
   source names.
-- Do not include source/resource links in subscriber emails or approval emails. The email should be a professional
-  InnoCorner briefing and link readers to the public article for any external resources.
+- Subscriber emails and approval emails may include useful links that were mentioned inside the articles or are needed
+  for context. Do not include links that reveal the source newsletter, forwarded email, tracking URL, "view in browser"
+  URL, unsubscribe URL, or the origin of where InnoCorner collected the news.
+- The email should be a professional InnoCorner briefing, with enough detail to stand on its own. The website article can
+  hold the fuller archive version and resource section.
 - Add relevant images only when rights, source stability, and visual quality are acceptable. Do not hotlink private email
   images, tracking pixels, or copyrighted images unless the source clearly allows it.
 - Public archive rows should stay brief: title, sent/published date, topic labels, and one or two lines maximum.
