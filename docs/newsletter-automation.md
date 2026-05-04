@@ -41,6 +41,15 @@ Every approved edition should read like a professional InnoCorner publication, n
 - Subscriber emails and approval emails may include useful links that were mentioned inside the articles or are needed
   for context. Do not include links that reveal the source newsletter, forwarded email, tracking URL, "view in browser"
   URL, unsubscribe URL, or the origin of where InnoCorner collected the news.
+- When a source email contains only an excerpt or teaser, find the clean article link behind labels such as "Read more",
+  the article title, or the canonical article URL, open it, and summarize the full article rather than only the email
+  excerpt.
+- Ignore newsletter infrastructure links such as tracking redirects, view-in-browser pages, unsubscribe links, mailto
+  links, social share URLs, sponsor links, and ads. Prefer canonical publisher article URLs when available.
+- If the full article is behind a login, paywall, broken page, or other access block, summarize the available excerpt and
+  mention the access limitation only in the private approval draft notes, not in public articles or subscriber emails.
+- Summarize full articles in original words and structure; do not reproduce copyrighted articles or long verbatim
+  passages.
 - The email should be a professional InnoCorner briefing, with enough detail to stand on its own. The website article can
   hold the fuller archive version and resource section.
 - Add relevant images only when rights, source stability, and visual quality are acceptable. Do not hotlink private email
